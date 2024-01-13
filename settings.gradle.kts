@@ -12,3 +12,6 @@ dependencyResolutionManagement {
     }
 }
 rootProject.name = "VexFlow Compose"
+include(":sample-app")
+include(":sample-desktop")
+include(":vexflow-compose")
