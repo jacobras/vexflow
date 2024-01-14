@@ -10,55 +10,55 @@ import { RenderContext } from './rendercontext';
 import { Category } from './typeguard';
 import { defined, prefix, RuntimeError } from './util';
 
-/** Element attributes. */
-export interface ElementAttributes {
-  [name: string]: string | undefined;
-  id: string;
-  type: string;
-  class: string;
-}
+// /** Element attributes. */
+// export interface ElementAttributes {
+//   [name: string]: string | undefined;
+//   id: string;
+//   type: string;
+//   class: string;
+// }
 
-/** Element style. */
-export interface ElementStyle {
-  /**
-   * CSS color used for the shadow.
-   *
-   * Examples: 'red', '#ff0000', '#ff000010', 'rgb(255,0,0)'
-   *
-   * See [CSS Legal Color Values](https://www.w3schools.com/cssref/css_colors_legal.asp)
-   */
-  shadowColor?: string;
-  /**
-   * Level of blur applied to shadows.
-   *
-   * Values that are not finite numbers greater than or equal to zero are ignored.
-   */
-  shadowBlur?: number;
-  /**
-   * CSS color used with context fill command.
-   *
-   * Examples: 'red', '#ff0000', '#ff000010', 'rgb(255,0,0)'
-   *
-   * See [CSS Legal Color Values](https://www.w3schools.com/cssref/css_colors_legal.asp)
-   */
-  fillStyle?: string;
-  /**
-   * CSS color used with context stroke command.
-   *
-   * Examples: 'red', '#ff0000', '#ff000010', 'rgb(255,0,0)'
-   *
-   * See [CSS Legal Color Values](https://www.w3schools.com/cssref/css_colors_legal.asp)
-   */
-  strokeStyle?: string;
-  /**
-   * Line width, 1.0 by default.
-   */
-  lineWidth?: number;
-  /**
-   * See: [SVG `stroke-dasharray` attribute](https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/stroke-dasharray)
-   */
-  lineDash?: string;
-}
+// /** Element style. */
+// export interface ElementStyle {
+//   /**
+//    * CSS color used for the shadow.
+//    *
+//    * Examples: 'red', '#ff0000', '#ff000010', 'rgb(255,0,0)'
+//    *
+//    * See [CSS Legal Color Values](https://www.w3schools.com/cssref/css_colors_legal.asp)
+//    */
+//   shadowColor?: string;
+//   /**
+//    * Level of blur applied to shadows.
+//    *
+//    * Values that are not finite numbers greater than or equal to zero are ignored.
+//    */
+//   shadowBlur?: number;
+//   /**
+//    * CSS color used with context fill command.
+//    *
+//    * Examples: 'red', '#ff0000', '#ff000010', 'rgb(255,0,0)'
+//    *
+//    * See [CSS Legal Color Values](https://www.w3schools.com/cssref/css_colors_legal.asp)
+//    */
+//   fillStyle?: string;
+//   /**
+//    * CSS color used with context stroke command.
+//    *
+//    * Examples: 'red', '#ff0000', '#ff000010', 'rgb(255,0,0)'
+//    *
+//    * See [CSS Legal Color Values](https://www.w3schools.com/cssref/css_colors_legal.asp)
+//    */
+//   strokeStyle?: string;
+//   /**
+//    * Line width, 1.0 by default.
+//    */
+//   lineWidth?: number;
+//   /**
+//    * See: [SVG `stroke-dasharray` attribute](https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/stroke-dasharray)
+//    */
+//   lineDash?: string;
+// }
 
 /**
  * Element implements a generic base class for VexFlow, with implementations
@@ -110,14 +110,14 @@ export class Element {
     return txtCanvas;
   }
 
-  #context?: RenderContext;
-  #attrs: ElementAttributes;
+//   #context?: RenderContext;
+//   #attrs: ElementAttributes;
 
-  protected rendered: boolean;
-  protected style?: ElementStyle;
+//   protected rendered: boolean;
+//   protected style?: ElementStyle;
   protected registry?: Registry;
 
-  #fontInfo: Required<FontInfo>;
+//   #fontInfo: Required<FontInfo>;
   #fontScale: number;
   #text = '';
   #metricsValid = false;
@@ -131,12 +131,12 @@ export class Element {
     width: 0,
   };
 
-  #height: number = 0;
-  #width: number = 0;
-  protected xShift: number = 0;
-  protected yShift: number = 0;
-  protected x: number = 0;
-  protected y: number = 0;
+//   #height: number = 0;
+//   #width: number = 0;
+//   protected xShift: number = 0;
+//   protected yShift: number = 0;
+//   protected x: number = 0;
+//   protected y: number = 0;
 
   constructor(category?: string) {
     this.#attrs = {
@@ -205,40 +205,40 @@ export class Element {
     return this;
   }
 
-  /** Get the element style used for rendering. */
-  getStyle(): ElementStyle | undefined {
-    return this.style;
-  }
+//   /** Get the element style used for rendering. */
+//   getStyle(): ElementStyle | undefined {
+//     return this.style;
+//   }
 
-  /** Apply the element style to `context`. */
-  applyStyle(
-    context: RenderContext | undefined = this.#context,
-    style: ElementStyle | undefined = this.getStyle()
-  ): this {
-    if (!style) return this;
-    if (!context) return this;
+//   /** Apply the element style to `context`. */
+//   applyStyle(
+//     context: RenderContext | undefined = this.#context,
+//     style: ElementStyle | undefined = this.getStyle()
+//   ): this {
+//     if (!style) return this;
+//     if (!context) return this;
+//
+//     context.save();
+//     if (style.shadowColor) context.setShadowColor(style.shadowColor);
+//     if (style.shadowBlur) context.setShadowBlur(style.shadowBlur);
+//     if (style.fillStyle) context.setFillStyle(style.fillStyle);
+//     if (style.strokeStyle) context.setStrokeStyle(style.strokeStyle);
+//     if (style.lineWidth) context.setLineWidth(style.lineWidth);
+//     if (style.lineDash) context.setLineDash(style.lineDash.split(' ').map(Number));
+//
+//     return this;
+//   }
 
-    context.save();
-    if (style.shadowColor) context.setShadowColor(style.shadowColor);
-    if (style.shadowBlur) context.setShadowBlur(style.shadowBlur);
-    if (style.fillStyle) context.setFillStyle(style.fillStyle);
-    if (style.strokeStyle) context.setStrokeStyle(style.strokeStyle);
-    if (style.lineWidth) context.setLineWidth(style.lineWidth);
-    if (style.lineDash) context.setLineDash(style.lineDash.split(' ').map(Number));
-
-    return this;
-  }
-
-  /** Restore the style of `context`. */
-  restoreStyle(
-    context: RenderContext | undefined = this.#context,
-    style: ElementStyle | undefined = this.getStyle()
-  ): this {
-    if (!style) return this;
-    if (!context) return this;
-    context.restore();
-    return this;
-  }
+//   /** Restore the style of `context`. */
+//   restoreStyle(
+//     context: RenderContext | undefined = this.#context,
+//     style: ElementStyle | undefined = this.getStyle()
+//   ): this {
+//     if (!style) return this;
+//     if (!context) return this;
+//     context.restore();
+//     return this;
+//   }
 
   /**
    * Draw the element and all its sub-elements (ie.: Modifiers in a Stave)
@@ -252,9 +252,9 @@ export class Element {
   }
 
   /** Draw an element. */
-  draw(): void {
-    throw new RuntimeError('Element', 'Draw not defined');
-  }
+//   draw(): void {
+//     throw new RuntimeError('Element', 'Draw not defined');
+//   }
 
   /** Check if it has a class label (An element can have multiple class labels). */
   hasClass(className: string): boolean {
@@ -299,10 +299,10 @@ export class Element {
     return this;
   }
 
-  /** Return the rendered status. */
-  isRendered(): boolean {
-    return this.rendered;
-  }
+//   /** Return the rendered status. */
+//   isRendered(): boolean {
+//     return this.rendered;
+//   }
 
   /** Set the rendered status. */
   setRendered(rendered = true): this {
@@ -310,16 +310,16 @@ export class Element {
     return this;
   }
 
-  /** Return the element attributes. */
-  getAttributes(): ElementAttributes {
-    return this.#attrs;
-  }
-
-  /** Return an attribute, such as 'id', 'type' or 'class'. */
-  // eslint-disable-next-line
-  getAttribute(name: string): any {
-    return this.#attrs[name];
-  }
+//   /** Return the element attributes. */
+//   getAttributes(): ElementAttributes {
+//     return this.#attrs;
+//   }
+//
+//   /** Return an attribute, such as 'id', 'type' or 'class'. */
+//   // eslint-disable-next-line
+//   getAttribute(name: string): any {
+//     return this.#attrs[name];
+//   }
 
   /** Return associated SVGElement. */
   getSVGElement(suffix: string = ''): SVGElement | undefined {
@@ -328,15 +328,15 @@ export class Element {
     if (element) return element as unknown as SVGElement;
   }
 
-  /** Set an attribute such as 'id', 'class', or 'type'. */
-  setAttribute(name: string, value: string | undefined): this {
-    const oldID = this.#attrs.id;
-    const oldValue = this.#attrs[name];
-    this.#attrs[name] = value;
-    // Register with old id to support id changes.
-    this.registry?.onUpdate({ id: oldID, name, value, oldValue });
-    return this;
-  }
+//   /** Set an attribute such as 'id', 'class', or 'type'. */
+//   setAttribute(name: string, value: string | undefined): this {
+//     const oldID = this.#attrs.id;
+//     const oldValue = this.#attrs[name];
+//     this.#attrs[name] = value;
+//     // Register with old id to support id changes.
+//     this.registry?.onUpdate({ id: oldID, name, value, oldValue });
+//     return this;
+//   }
 
   /** Get the boundingBox. */
   getBoundingBox(): BoundingBox {
@@ -359,10 +359,10 @@ export class Element {
     return this;
   }
 
-  /** Validate and return the rendering context. */
-  checkContext(): RenderContext {
-    return defined(this.#context, 'NoContext', 'No rendering context attached to instance.');
-  }
+//   /** Validate and return the rendering context. */
+//   checkContext(): RenderContext {
+//     return defined(this.#context, 'NoContext', 'No rendering context attached to instance.');
+//   }
 
   //////////////////////////////////////////////////////////////////////////////////////////////////
   // Font Handling
@@ -515,10 +515,10 @@ export class Element {
     this.setFont(fontInfo.family, fontInfo.size, weight, fontInfo.style);
   }
 
-  /** Get element width. */
-  getWidth(): number {
-    return this.width;
-  }
+//   /** Get element width. */
+//   getWidth(): number {
+//     return this.width;
+//   }
 
   get width(): number {
     if (!this.#metricsValid) this.measureText();
@@ -536,37 +536,37 @@ export class Element {
     this.#width = width;
   }
 
-  /** Set the X coordinate. */
-  setX(x: number): this {
-    this.x = x;
-    return this;
-  }
+//   /** Set the X coordinate. */
+//   setX(x: number): this {
+//     this.x = x;
+//     return this;
+//   }
 
   /** Get the X coordinate. */
-  getX(): number {
-    return this.x;
-  }
-  /** Get the Y coordinate. */
-  getY(): number {
-    return this.y;
-  }
+//   getX(): number {
+//     return this.x;
+//   }
+//   /** Get the Y coordinate. */
+//   getY(): number {
+//     return this.y;
+//   }
 
   /** Set the Y coordinate. */
-  setY(y: number): this {
-    this.y = y;
-    return this;
-  }
-
-  /** Shift element down `yShift` pixels. Negative values shift up. */
-  setYShift(yShift: number): this {
-    this.yShift = yShift;
-    return this;
-  }
-
-  /** Get shift element `yShift`. */
-  getYShift(): number {
-    return this.yShift;
-  }
+//   setY(y: number): this {
+//     this.y = y;
+//     return this;
+//   }
+//
+//   /** Shift element down `yShift` pixels. Negative values shift up. */
+//   setYShift(yShift: number): this {
+//     this.yShift = yShift;
+//     return this;
+//   }
+//
+//   /** Get shift element `yShift`. */
+//   getYShift(): number {
+//     return this.yShift;
+//   }
 
   /** Set shift element right `xShift` pixels. Negative values shift left. */
   setXShift(xShift: number): this {

@@ -39,19 +39,19 @@ export interface StaveOptions {
 // Used by Stave.format() to sort the modifiers at the beginning and end of a stave.
 // The keys (computed property names) match the CATEGORY property in the
 // Barline, Clef, KeySignature, TimeSignature classes.
-const SORT_ORDER_BEG_MODIFIERS = {
-  [Barline.CATEGORY]: 0,
-  [Clef.CATEGORY]: 1,
-  [KeySignature.CATEGORY]: 2,
-  [TimeSignature.CATEGORY]: 3,
-};
+// const SORT_ORDER_BEG_MODIFIERS = {
+//   [Barline.CATEGORY]: 0,
+//   [Clef.CATEGORY]: 1,
+//   [KeySignature.CATEGORY]: 2,
+//   [TimeSignature.CATEGORY]: 3,
+// };
 
-const SORT_ORDER_END_MODIFIERS = {
-  [TimeSignature.CATEGORY]: 0,
-  [KeySignature.CATEGORY]: 1,
-  [Barline.CATEGORY]: 2,
-  [Clef.CATEGORY]: 3,
-};
+// const SORT_ORDER_END_MODIFIERS = {
+//   [TimeSignature.CATEGORY]: 0,
+//   [KeySignature.CATEGORY]: 1,
+//   [Barline.CATEGORY]: 2,
+//   [Clef.CATEGORY]: 3,
+// };
 
 export class Stave extends Element {
   static get CATEGORY(): string {
@@ -60,13 +60,13 @@ export class Stave extends Element {
 
   readonly options: Required<StaveOptions>;
 
-  protected startX: number;
-  protected endX: number;
-  protected clef: string;
-  protected endClef?: string;
+//   protected startX: number;
+//   protected endX: number;
+//   protected clef: string;
+//   protected endClef?: string;
 
-  protected formatted: boolean;
-  protected measure: number;
+//   protected formatted: boolean;
+//   protected measure: number;
   protected bounds: Bounds;
   protected readonly modifiers: StaveModifier[];
 
@@ -172,9 +172,9 @@ export class Stave extends Element {
     return this.endX;
   }
 
-  getNumLines(): number {
-    return this.options.numLines;
-  }
+//   getNumLines(): number {
+//     return this.options.numLines;
+//   }
 
   setNumLines(n: number): this {
     this.options.numLines = n;
@@ -182,13 +182,13 @@ export class Stave extends Element {
     return this;
   }
 
-  getTopLineTopY(): number {
-    return this.getYForLine(0) - Tables.STAVE_LINE_THICKNESS / 2;
-  }
-
-  getBottomLineBottomY(): number {
-    return this.getYForLine(this.getNumLines() - 1) + Tables.STAVE_LINE_THICKNESS / 2;
-  }
+//   getTopLineTopY(): number {
+//     return this.getYForLine(0) - Tables.STAVE_LINE_THICKNESS / 2;
+//   }
+//
+//   getBottomLineBottomY(): number {
+//     return this.getYForLine(this.getNumLines() - 1) + Tables.STAVE_LINE_THICKNESS / 2;
+//   }
 
   setX(x: number): this {
     const shift = x - this.x;
@@ -237,36 +237,36 @@ export class Stave extends Element {
     return this.measure;
   }
 
-  /**
-   * Gets the pixels to shift from the beginning of the stave
-   * following the modifier at the provided index
-   * @param  {Number} index The index from which to determine the shift
-   * @return {Number}       The amount of pixels shifted
-   */
-  getModifierXShift(index: number = 0): number {
-    if (typeof index !== 'number') {
-      throw new RuntimeError('InvalidIndex', 'Must be of number type');
-    }
-
-    if (!this.formatted) this.format();
-
-    if (this.getModifiers(StaveModifierPosition.BEGIN).length === 1) {
-      return 0;
-    }
-
-    // for right position modifiers zero shift seems correct, see 'Volta + Modifier Measure Test'
-    if (this.modifiers[index].getPosition() === StaveModifierPosition.RIGHT) {
-      return 0;
-    }
-
-    let startX = this.startX - this.x;
-    const begBarline = this.modifiers[0] as Barline;
-    if (begBarline.getType() === BarlineType.REPEAT_BEGIN && startX > begBarline.getWidth()) {
-      startX -= begBarline.getWidth();
-    }
-
-    return startX;
-  }
+//   /**
+//    * Gets the pixels to shift from the beginning of the stave
+//    * following the modifier at the provided index
+//    * @param  {Number} index The index from which to determine the shift
+//    * @return {Number}       The amount of pixels shifted
+//    */
+//   getModifierXShift(index: number = 0): number {
+//     if (typeof index !== 'number') {
+//       throw new RuntimeError('InvalidIndex', 'Must be of number type');
+//     }
+//
+//     if (!this.formatted) this.format();
+//
+//     if (this.getModifiers(StaveModifierPosition.BEGIN).length === 1) {
+//       return 0;
+//     }
+//
+//     // for right position modifiers zero shift seems correct, see 'Volta + Modifier Measure Test'
+//     if (this.modifiers[index].getPosition() === StaveModifierPosition.RIGHT) {
+//       return 0;
+//     }
+//
+//     let startX = this.startX - this.x;
+//     const begBarline = this.modifiers[0] as Barline;
+//     if (begBarline.getType() === BarlineType.REPEAT_BEGIN && startX > begBarline.getWidth()) {
+//       startX -= begBarline.getWidth();
+//     }
+//
+//     return startX;
+//   }
 
   /** Coda & Segno Symbol functions */
   setRepetitionType(type: number, yShift: number = 0): this {
@@ -310,9 +310,9 @@ export class Stave extends Element {
     return this;
   }
 
-  getSpacingBetweenLines(): number {
-    return this.options.spacingBetweenLinesPx;
-  }
+//   getSpacingBetweenLines(): number {
+//     return this.options.spacingBetweenLinesPx;
+//   }
 
   getBoundingBox(): BoundingBox {
     return new BoundingBox(this.x, this.y, this.width, this.getBottomY() - this.y);
@@ -329,17 +329,17 @@ export class Stave extends Element {
     return this.getYForLine(this.options.numLines);
   }
 
-  // This returns
-  /** @returns the y for the *center* of a staff line */
-  getYForLine(line: number): number {
-    const options = this.options;
-    const spacing = options.spacingBetweenLinesPx;
-    const headroom = options.spaceAboveStaffLn;
-
-    const y = this.y + line * spacing + headroom * spacing;
-
-    return y;
-  }
+//   // This returns
+//   /** @returns the y for the *center* of a staff line */
+//   getYForLine(line: number): number {
+//     const options = this.options;
+//     const spacing = options.spacingBetweenLinesPx;
+//     const headroom = options.spaceAboveStaffLn;
+//
+//     const y = this.y + line * spacing + headroom * spacing;
+//
+//     return y;
+//   }
 
   getLineForY(y: number): number {
     // Does the reverse of getYForLine - somewhat dumb and just calls
@@ -351,9 +351,9 @@ export class Stave extends Element {
     return (y - this.y) / spacing - headroom;
   }
 
-  getYForTopText(line: number = 0): number {
-    return this.getYForLine(-line - this.options.topTextPosition);
-  }
+//   getYForTopText(line: number = 0): number {
+//     return this.getYForLine(-line - this.options.topTextPosition);
+//   }
 
   getYForBottomText(line: number = 0): number {
     return this.getYForLine(this.options.bottomTextPosition + line);
@@ -555,134 +555,134 @@ export class Stave extends Element {
     return this;
   }
 
-  /**
-   * @param position
-   * @param category
-   * @returns array of StaveModifiers that match the provided position and category.
-   */
-  getModifiers(position?: number, category?: string): StaveModifier[] {
-    const noPosition = position === undefined;
-    const noCategory = category === undefined;
-    if (noPosition && noCategory) {
-      return this.modifiers;
-    } else if (noPosition) {
-      // A category was provided.
-      return this.modifiers.filter((m: StaveModifier) => category === m.getCategory());
-    } else if (noCategory) {
-      // A position was provided.
-      return this.modifiers.filter((m: StaveModifier) => position === m.getPosition());
-    } else {
-      // Both position and category were provided!
-      return this.modifiers.filter((m: StaveModifier) => position === m.getPosition() && category === m.getCategory());
-    }
-  }
+//   /**
+//    * @param position
+//    * @param category
+//    * @returns array of StaveModifiers that match the provided position and category.
+//    */
+//   getModifiers(position?: number, category?: string): StaveModifier[] {
+//     const noPosition = position === undefined;
+//     const noCategory = category === undefined;
+//     if (noPosition && noCategory) {
+//       return this.modifiers;
+//     } else if (noPosition) {
+//       // A category was provided.
+//       return this.modifiers.filter((m: StaveModifier) => category === m.getCategory());
+//     } else if (noCategory) {
+//       // A position was provided.
+//       return this.modifiers.filter((m: StaveModifier) => position === m.getPosition());
+//     } else {
+//       // Both position and category were provided!
+//       return this.modifiers.filter((m: StaveModifier) => position === m.getPosition() && category === m.getCategory());
+//     }
+//   }
 
-  /**
-   * Use the modifier's `getCategory()` as a key for the `order` array.
-   * The retrieved value is used to sort modifiers from left to right (0 to to 3).
-   */
-  sortByCategory(items: StaveModifier[], order: Record<string, number>): void {
-    for (let i = items.length - 1; i >= 0; i--) {
-      for (let j = 0; j < i; j++) {
-        if (order[items[j].getCategory()] > order[items[j + 1].getCategory()]) {
-          const temp = items[j];
-          items[j] = items[j + 1];
-          items[j + 1] = temp;
-        }
-      }
-    }
-  }
+//   /**
+//    * Use the modifier's `getCategory()` as a key for the `order` array.
+//    * The retrieved value is used to sort modifiers from left to right (0 to to 3).
+//    */
+//   sortByCategory(items: StaveModifier[], order: Record<string, number>): void {
+//     for (let i = items.length - 1; i >= 0; i--) {
+//       for (let j = 0; j < i; j++) {
+//         if (order[items[j].getCategory()] > order[items[j + 1].getCategory()]) {
+//           const temp = items[j];
+//           items[j] = items[j + 1];
+//           items[j + 1] = temp;
+//         }
+//       }
+//     }
+//   }
 
-  format(): void {
-    const begBarline = this.modifiers[0] as Barline;
-    const endBarline = this.modifiers[1];
-
-    const begModifiers = this.getModifiers(StaveModifierPosition.BEGIN);
-    const endModifiers = this.getModifiers(StaveModifierPosition.END);
-
-    this.sortByCategory(begModifiers, SORT_ORDER_BEG_MODIFIERS);
-    this.sortByCategory(endModifiers, SORT_ORDER_END_MODIFIERS);
-
-    if (begModifiers.length > 1 && begBarline.getType() === BarlineType.REPEAT_BEGIN) {
-      begModifiers.push(begModifiers.splice(0, 1)[0]);
-      begModifiers.splice(0, 0, new Barline(BarlineType.SINGLE));
-    }
-
-    if (endModifiers.indexOf(endBarline) > 0) {
-      endModifiers.splice(0, 0, new Barline(BarlineType.NONE));
-    }
-
-    let width;
-    let padding;
-    let modifier;
-    let offset = 0;
-    let x = this.x;
-    for (let i = 0; i < begModifiers.length; i++) {
-      modifier = begModifiers[i];
-      padding = modifier.getPadding(i + offset);
-      width = modifier.getWidth();
-
-      x += padding;
-      modifier.setX(x);
-      x += width;
-
-      if (padding + width === 0) offset--;
-    }
-
-    this.startX = x;
-    x = this.x + this.width;
-
-    const widths = {
-      left: 0,
-      right: 0,
-      paddingRight: 0,
-      paddingLeft: 0,
-    };
-
-    let lastBarlineIdx = 0;
-
-    for (let i = 0; i < endModifiers.length; i++) {
-      modifier = endModifiers[i];
-      lastBarlineIdx = isBarline(modifier) ? i : lastBarlineIdx;
-
-      widths.right = 0;
-      widths.left = 0;
-      widths.paddingRight = 0;
-      widths.paddingLeft = 0;
-      const layoutMetrics = modifier.getLayoutMetrics();
-
-      if (layoutMetrics) {
-        if (i !== 0) {
-          widths.right = layoutMetrics.xMax ?? 0;
-          widths.paddingRight = layoutMetrics.paddingRight ?? 0;
-        }
-        widths.left = -layoutMetrics.xMin ?? 0;
-        widths.paddingLeft = layoutMetrics.paddingLeft ?? 0;
-
-        if (i === endModifiers.length - 1) {
-          widths.paddingLeft = 0;
-        }
-      } else {
-        widths.paddingRight = modifier.getPadding(i - lastBarlineIdx);
-        if (i !== 0) {
-          widths.right = modifier.getWidth();
-        }
-        if (i === 0) {
-          widths.left = modifier.getWidth();
-        }
-      }
-      x -= widths.paddingRight;
-      x -= widths.right;
-
-      modifier.setX(x);
-
-      x -= widths.left;
-      x -= widths.paddingLeft;
-    }
-
-    this.endX = endModifiers.length === 1 ? this.x + this.width : x;
-    this.formatted = true;
-  }
+//   format(): void {
+//     const begBarline = this.modifiers[0] as Barline;
+//     const endBarline = this.modifiers[1];
+//
+//     const begModifiers = this.getModifiers(StaveModifierPosition.BEGIN);
+//     const endModifiers = this.getModifiers(StaveModifierPosition.END);
+//
+//     this.sortByCategory(begModifiers, SORT_ORDER_BEG_MODIFIERS);
+//     this.sortByCategory(endModifiers, SORT_ORDER_END_MODIFIERS);
+//
+//     if (begModifiers.length > 1 && begBarline.getType() === BarlineType.REPEAT_BEGIN) {
+//       begModifiers.push(begModifiers.splice(0, 1)[0]);
+//       begModifiers.splice(0, 0, new Barline(BarlineType.SINGLE));
+//     }
+//
+//     if (endModifiers.indexOf(endBarline) > 0) {
+//       endModifiers.splice(0, 0, new Barline(BarlineType.NONE));
+//     }
+//
+//     let width;
+//     let padding;
+//     let modifier;
+//     let offset = 0;
+//     let x = this.x;
+//     for (let i = 0; i < begModifiers.length; i++) {
+//       modifier = begModifiers[i];
+//       padding = modifier.getPadding(i + offset);
+//       width = modifier.getWidth();
+//
+//       x += padding;
+//       modifier.setX(x);
+//       x += width;
+//
+//       if (padding + width === 0) offset--;
+//     }
+//
+//     this.startX = x;
+//     x = this.x + this.width;
+//
+//     const widths = {
+//       left: 0,
+//       right: 0,
+//       paddingRight: 0,
+//       paddingLeft: 0,
+//     };
+//
+//     let lastBarlineIdx = 0;
+//
+//     for (let i = 0; i < endModifiers.length; i++) {
+//       modifier = endModifiers[i];
+//       lastBarlineIdx = isBarline(modifier) ? i : lastBarlineIdx;
+//
+//       widths.right = 0;
+//       widths.left = 0;
+//       widths.paddingRight = 0;
+//       widths.paddingLeft = 0;
+//       const layoutMetrics = modifier.getLayoutMetrics();
+//
+//       if (layoutMetrics) {
+//         if (i !== 0) {
+//           widths.right = layoutMetrics.xMax ?? 0;
+//           widths.paddingRight = layoutMetrics.paddingRight ?? 0;
+//         }
+//         widths.left = -layoutMetrics.xMin ?? 0;
+//         widths.paddingLeft = layoutMetrics.paddingLeft ?? 0;
+//
+//         if (i === endModifiers.length - 1) {
+//           widths.paddingLeft = 0;
+//         }
+//       } else {
+//         widths.paddingRight = modifier.getPadding(i - lastBarlineIdx);
+//         if (i !== 0) {
+//           widths.right = modifier.getWidth();
+//         }
+//         if (i === 0) {
+//           widths.left = modifier.getWidth();
+//         }
+//       }
+//       x -= widths.paddingRight;
+//       x -= widths.right;
+//
+//       modifier.setX(x);
+//
+//       x -= widths.left;
+//       x -= widths.paddingLeft;
+//     }
+//
+//     this.endX = endModifiers.length === 1 ? this.x + this.width : x;
+//     this.formatted = true;
+//   }
 
   /**
    * All drawing functions below need the context to be set.

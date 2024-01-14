@@ -18,16 +18,16 @@ export enum BarlineType {
 }
 
 export class Barline extends StaveModifier {
-  static get CATEGORY(): string {
-    return Category.Barline;
-  }
+//   static get CATEGORY(): string {
+//     return Category.Barline;
+//   }
 
   protected widths: Record<string, number>;
   protected paddings: Record<string, number>;
   protected layoutMetricsMap: Record<number, LayoutMetrics>;
 
   protected thickness: number;
-  protected type!: BarlineType;
+//   protected type!: BarlineType;
 
   static get type(): typeof BarlineType {
     return BarlineType;
@@ -115,9 +115,9 @@ export class Barline extends StaveModifier {
     this.setType(type);
   }
 
-  getType(): number {
-    return this.type;
-  }
+//   getType(): number {
+//     return this.type;
+//   }
 
   setType(type: string | number): this {
     this.type = typeof type === 'string' ? Barline.typeString[type] : type;
@@ -130,102 +130,102 @@ export class Barline extends StaveModifier {
 
   // Draw barlines
   draw(stave: Stave): void {
-    const ctx = stave.checkContext();
-    this.setRendered();
-
-    this.applyStyle(ctx);
-    ctx.openGroup('stavebarline', this.getAttribute('id'));
-    switch (this.type) {
-      case BarlineType.SINGLE:
-        this.drawVerticalBar(stave, this.x, false);
-        break;
-      case BarlineType.DOUBLE:
-        this.drawVerticalBar(stave, this.x, true);
-        break;
-      case BarlineType.END:
-        this.drawVerticalEndBar(stave, this.x);
-        break;
-      case BarlineType.REPEAT_BEGIN:
-        // If the barline is shifted over (in front of clef/time/key)
-        // Draw vertical bar at the beginning.
-        this.drawRepeatBar(stave, this.x, true);
-        if (stave.getX() !== this.x) {
-          this.drawVerticalBar(stave, stave.getX());
-        }
-
-        break;
-      case BarlineType.REPEAT_END:
-        this.drawRepeatBar(stave, this.x, false);
-        break;
-      case BarlineType.REPEAT_BOTH:
-        this.drawRepeatBar(stave, this.x, false);
-        this.drawRepeatBar(stave, this.x, true);
-        break;
-      default:
-        // Default is NONE, so nothing to draw
-        break;
-    }
-    ctx.closeGroup();
-    this.restoreStyle(ctx);
+//     const ctx = stave.checkContext();
+//     this.setRendered();
+//
+//     this.applyStyle(ctx);
+//     ctx.openGroup('stavebarline', this.getAttribute('id'));
+//     switch (this.type) {
+//       case BarlineType.SINGLE:
+//         this.drawVerticalBar(stave, this.x, false);
+//         break;
+//       case BarlineType.DOUBLE:
+//         this.drawVerticalBar(stave, this.x, true);
+//         break;
+//       case BarlineType.END:
+//         this.drawVerticalEndBar(stave, this.x);
+//         break;
+//       case BarlineType.REPEAT_BEGIN:
+//         // If the barline is shifted over (in front of clef/time/key)
+//         // Draw vertical bar at the beginning.
+//         this.drawRepeatBar(stave, this.x, true);
+//         if (stave.getX() !== this.x) {
+//           this.drawVerticalBar(stave, stave.getX());
+//         }
+//
+//         break;
+//       case BarlineType.REPEAT_END:
+//         this.drawRepeatBar(stave, this.x, false);
+//         break;
+//       case BarlineType.REPEAT_BOTH:
+//         this.drawRepeatBar(stave, this.x, false);
+//         this.drawRepeatBar(stave, this.x, true);
+//         break;
+//       default:
+//         // Default is NONE, so nothing to draw
+//         break;
+//     }
+//     ctx.closeGroup();
+//     this.restoreStyle(ctx);
   }
 
-  drawVerticalBar(stave: Stave, x: number, doubleBar?: boolean): void {
-    const staveCtx = stave.checkContext();
-    const topY = stave.getTopLineTopY();
-    const botY = stave.getBottomLineBottomY();
-    if (doubleBar) {
-      staveCtx.fillRect(x - 3, topY, 1, botY - topY);
-    }
-    staveCtx.fillRect(x, topY, 1, botY - topY);
-  }
-
-  drawVerticalEndBar(stave: Stave, x: number): void {
-    const staveCtx = stave.checkContext();
-    const topY = stave.getTopLineTopY();
-    const botY = stave.getBottomLineBottomY();
-    staveCtx.fillRect(x - 5, topY, 1, botY - topY);
-    staveCtx.fillRect(x - 2, topY, 3, botY - topY);
-  }
-
-  drawRepeatBar(stave: Stave, x: number, begin: boolean): void {
-    const staveCtx = stave.checkContext();
-
-    const topY = stave.getTopLineTopY();
-    const botY = stave.getBottomLineBottomY();
-    let xShift = 3;
-
-    if (!begin) {
-      xShift = -5;
-    }
-
-    staveCtx.fillRect(x + xShift, topY, 1, botY - topY);
-    staveCtx.fillRect(x - 2, topY, 3, botY - topY);
-
-    const dotRadius = 2;
-
-    // Shift dots left or right
-    if (begin) {
-      xShift += 4;
-    } else {
-      xShift -= 4;
-    }
-
-    const dotX = x + xShift + dotRadius / 2;
-
-    // calculate the y offset based on number of stave lines
-    let yOffset = (stave.getNumLines() - 1) * stave.getSpacingBetweenLines();
-    yOffset = yOffset / 2 - stave.getSpacingBetweenLines() / 2;
-    let dotY = topY + yOffset + dotRadius / 2;
-
-    // draw the top repeat dot
-    staveCtx.beginPath();
-    staveCtx.arc(dotX, dotY, dotRadius, 0, Math.PI * 2, false);
-    staveCtx.fill();
-
-    // draw the bottom repeat dot
-    dotY += stave.getSpacingBetweenLines();
-    staveCtx.beginPath();
-    staveCtx.arc(dotX, dotY, dotRadius, 0, Math.PI * 2, false);
-    staveCtx.fill();
-  }
+//   drawVerticalBar(stave: Stave, x: number, doubleBar?: boolean): void {
+//     const staveCtx = stave.checkContext();
+//     const topY = stave.getTopLineTopY();
+//     const botY = stave.getBottomLineBottomY();
+//     if (doubleBar) {
+//       staveCtx.fillRect(x - 3, topY, 1, botY - topY);
+//     }
+//     staveCtx.fillRect(x, topY, 1, botY - topY);
+//   }
+//
+//   drawVerticalEndBar(stave: Stave, x: number): void {
+//     const staveCtx = stave.checkContext();
+//     const topY = stave.getTopLineTopY();
+//     const botY = stave.getBottomLineBottomY();
+//     staveCtx.fillRect(x - 5, topY, 1, botY - topY);
+//     staveCtx.fillRect(x - 2, topY, 3, botY - topY);
+//   }
+//
+//   drawRepeatBar(stave: Stave, x: number, begin: boolean): void {
+//     const staveCtx = stave.checkContext();
+//
+//     const topY = stave.getTopLineTopY();
+//     const botY = stave.getBottomLineBottomY();
+//     let xShift = 3;
+//
+//     if (!begin) {
+//       xShift = -5;
+//     }
+//
+//     staveCtx.fillRect(x + xShift, topY, 1, botY - topY);
+//     staveCtx.fillRect(x - 2, topY, 3, botY - topY);
+//
+//     const dotRadius = 2;
+//
+//     // Shift dots left or right
+//     if (begin) {
+//       xShift += 4;
+//     } else {
+//       xShift -= 4;
+//     }
+//
+//     const dotX = x + xShift + dotRadius / 2;
+//
+//     // calculate the y offset based on number of stave lines
+//     let yOffset = (stave.getNumLines() - 1) * stave.getSpacingBetweenLines();
+//     yOffset = yOffset / 2 - stave.getSpacingBetweenLines() / 2;
+//     let dotY = topY + yOffset + dotRadius / 2;
+//
+//     // draw the top repeat dot
+//     staveCtx.beginPath();
+//     staveCtx.arc(dotX, dotY, dotRadius, 0, Math.PI * 2, false);
+//     staveCtx.fill();
+//
+//     // draw the bottom repeat dot
+//     dotY += stave.getSpacingBetweenLines();
+//     staveCtx.beginPath();
+//     staveCtx.arc(dotX, dotY, dotRadius, 0, Math.PI * 2, false);
+//     staveCtx.fill();
+//   }
 }

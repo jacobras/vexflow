@@ -292,7 +292,7 @@ export class Tables {
   static SOFTMAX_FACTOR = 10;
   static STEM_WIDTH = 1.5;
   static STEM_HEIGHT = 35;
-  static STAVE_LINE_THICKNESS = 1;
+//   static STAVE_LINE_THICKNESS = 1;
   static RENDER_PRECISION_PLACES = 3;
   static RESOLUTION = RESOLUTION;
 

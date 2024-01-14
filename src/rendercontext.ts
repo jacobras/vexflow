@@ -4,12 +4,12 @@
 import { FontInfo } from './font';
 import { Category } from './typeguard';
 
-export interface TextMeasure {
-  x: number;
-  y: number;
-  width: number;
-  height: number;
-}
+// export interface TextMeasure {
+//   x: number;
+//   y: number;
+//   width: number;
+//   height: number;
+// }
 
 export abstract class RenderContext {
   static get CATEGORY(): string {
@@ -17,49 +17,49 @@ export abstract class RenderContext {
   }
 
   abstract clear(): void;
-  abstract setFillStyle(style: string): this;
+//   abstract setFillStyle(style: string): this;
   abstract setBackgroundFillStyle(style: string): this;
-  abstract setStrokeStyle(style: string): this;
-  abstract setShadowColor(color: string): this;
-  abstract setShadowBlur(blur: number): this;
-  abstract setLineWidth(width: number): this;
+//   abstract setStrokeStyle(style: string): this;
+//   abstract setShadowColor(color: string): this;
+//   abstract setShadowBlur(blur: number): this;
+//   abstract setLineWidth(width: number): this;
   abstract setLineCap(capType: CanvasLineCap): this;
-  abstract setLineDash(dashPattern: number[]): this;
+//   abstract setLineDash(dashPattern: number[]): this;
   abstract scale(x: number, y: number): this;
   abstract rect(x: number, y: number, width: number, height: number): this;
   abstract resize(width: number, height: number): this;
-  abstract fillRect(x: number, y: number, width: number, height: number): this;
+//   abstract fillRect(x: number, y: number, width: number, height: number): this;
   abstract clearRect(x: number, y: number, width: number, height: number): this;
   abstract pointerRect(x: number, y: number, width: number, height: number): this;
-  abstract beginPath(): this;
-  abstract moveTo(x: number, y: number): this;
-  abstract lineTo(x: number, y: number): this;
+//   abstract beginPath(): this;
+//   abstract moveTo(x: number, y: number): this;
+//   abstract lineTo(x: number, y: number): this;
   abstract bezierCurveTo(cp1x: number, cp1y: number, cp2x: number, cp2y: number, x: number, y: number): this;
   abstract quadraticCurveTo(cpx: number, cpy: number, x: number, y: number): this;
-  abstract arc(
-    x: number,
-    y: number,
-    radius: number,
-    startAngle: number,
-    endAngle: number,
-    counterclockwise: boolean
-  ): this;
+//   abstract arc(
+//     x: number,
+//     y: number,
+//     radius: number,
+//     startAngle: number,
+//     endAngle: number,
+//     counterclockwise: boolean
+//   ): this;
   // eslint-disable-next-line
-  abstract fill(attributes?: any): this;
-  abstract stroke(): this;
+//   abstract fill(attributes?: any): this;
+//   abstract stroke(): this;
   abstract closePath(): this;
-  abstract fillText(text: string, x: number, y: number): this;
-  abstract save(): this;
-  abstract restore(): this;
+//   abstract fillText(text: string, x: number, y: number): this;
+//   abstract save(): this;
+//   abstract restore(): this;
   // eslint-disable-next-line
-  abstract openGroup(cls?: string, id?: string): any;
-  abstract closeGroup(): void;
+//   abstract openGroup(cls?: string, id?: string): any;
+//   abstract closeGroup(): void;
   abstract openRotation(angleDegrees: number, x: number, y: number): void;
   abstract closeRotation(): void;
 
   // eslint-disable-next-line
   abstract add(child: any): void;
-  abstract measureText(text: string): TextMeasure;
+//   abstract measureText(text: string): TextMeasure;
 
   abstract set fillStyle(style: string | CanvasGradient | CanvasPattern);
   abstract get fillStyle(): string | CanvasGradient | CanvasPattern;
@@ -67,8 +67,8 @@ export abstract class RenderContext {
   abstract set strokeStyle(style: string | CanvasGradient | CanvasPattern);
   abstract get strokeStyle(): string | CanvasGradient | CanvasPattern;
 
-  abstract setFont(f?: string | FontInfo, size?: string | number, weight?: string | number, style?: string): this;
-  abstract getFont(): string;
+//   abstract setFont(f?: string | FontInfo, size?: string | number, weight?: string | number, style?: string): this;
+//   abstract getFont(): string;
 
   set font(f: string) {
     this.setFont(f);
