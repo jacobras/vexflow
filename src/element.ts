@@ -10,55 +10,55 @@ import { RenderContext } from './rendercontext';
 import { Category } from './typeguard';
 import { defined, prefix, RuntimeError } from './util';
 
-/** Element attributes. */
-export interface ElementAttributes {
-  [name: string]: string | undefined;
-  id: string;
-  type: string;
-  class: string;
-}
+// /** Element attributes. */
+// export interface ElementAttributes {
+//   [name: string]: string | undefined;
+//   id: string;
+//   type: string;
+//   class: string;
+// }
 
 /** Element style. */
-export interface ElementStyle {
-  /**
-   * CSS color used for the shadow.
-   *
-   * Examples: 'red', '#ff0000', '#ff000010', 'rgb(255,0,0)'
-   *
-   * See [CSS Legal Color Values](https://www.w3schools.com/cssref/css_colors_legal.asp)
-   */
-  shadowColor?: string;
-  /**
-   * Level of blur applied to shadows.
-   *
-   * Values that are not finite numbers greater than or equal to zero are ignored.
-   */
-  shadowBlur?: number;
-  /**
-   * CSS color used with context fill command.
-   *
-   * Examples: 'red', '#ff0000', '#ff000010', 'rgb(255,0,0)'
-   *
-   * See [CSS Legal Color Values](https://www.w3schools.com/cssref/css_colors_legal.asp)
-   */
-  fillStyle?: string;
-  /**
-   * CSS color used with context stroke command.
-   *
-   * Examples: 'red', '#ff0000', '#ff000010', 'rgb(255,0,0)'
-   *
-   * See [CSS Legal Color Values](https://www.w3schools.com/cssref/css_colors_legal.asp)
-   */
-  strokeStyle?: string;
-  /**
-   * Line width, 1.0 by default.
-   */
-  lineWidth?: number;
-  /**
-   * See: [SVG `stroke-dasharray` attribute](https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/stroke-dasharray)
-   */
-  lineDash?: string;
-}
+// export interface ElementStyle {
+//   /**
+//    * CSS color used for the shadow.
+//    *
+//    * Examples: 'red', '#ff0000', '#ff000010', 'rgb(255,0,0)'
+//    *
+//    * See [CSS Legal Color Values](https://www.w3schools.com/cssref/css_colors_legal.asp)
+//    */
+//   shadowColor?: string;
+//   /**
+//    * Level of blur applied to shadows.
+//    *
+//    * Values that are not finite numbers greater than or equal to zero are ignored.
+//    */
+//   shadowBlur?: number;
+//   /**
+//    * CSS color used with context fill command.
+//    *
+//    * Examples: 'red', '#ff0000', '#ff000010', 'rgb(255,0,0)'
+//    *
+//    * See [CSS Legal Color Values](https://www.w3schools.com/cssref/css_colors_legal.asp)
+//    */
+//   fillStyle?: string;
+//   /**
+//    * CSS color used with context stroke command.
+//    *
+//    * Examples: 'red', '#ff0000', '#ff000010', 'rgb(255,0,0)'
+//    *
+//    * See [CSS Legal Color Values](https://www.w3schools.com/cssref/css_colors_legal.asp)
+//    */
+//   strokeStyle?: string;
+//   /**
+//    * Line width, 1.0 by default.
+//    */
+//   lineWidth?: number;
+//   /**
+//    * See: [SVG `stroke-dasharray` attribute](https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/stroke-dasharray)
+//    */
+//   lineDash?: string;
+// }
 
 /**
  * Element implements a generic base class for VexFlow, with implementations
@@ -75,17 +75,17 @@ export interface ElementStyle {
  * taking `xShift` and `yShift` into account.
  */
 export class Element {
-  static get CATEGORY(): string {
-    return Category.Element;
-  }
+//   static get CATEGORY(): string {
+//     return Category.Element;
+//   }
 
-  // Element objects keep a list of children that they are responsible for.
-  // Children inherit the style from their parents (see: setGroupStyle(s)).
-  protected children: Element[] = [];
-  protected static ID: number = 1000;
-  protected static newID(): string {
-    return `auto${Element.ID++}`;
-  }
+//   // Element objects keep a list of children that they are responsible for.
+//   // Children inherit the style from their parents (see: setGroupStyle(s)).
+//   protected children: Element[] = [];
+//   protected static ID: number = 1000;
+//   protected static newID(): string {
+//     return `auto${Element.ID++}`;
+//   }
 
   /** Canvas used to measure text. See measureText(): TextMetrics. */
   static #txtCanvas?: HTMLCanvasElement | OffscreenCanvas;
@@ -110,216 +110,216 @@ export class Element {
     return txtCanvas;
   }
 
-  #context?: RenderContext;
-  #attrs: ElementAttributes;
+//   #context?: RenderContext;
+//   #attrs: ElementAttributes;
+//
+//   protected rendered: boolean;
+//   protected style?: ElementStyle;
+//   protected registry?: Registry;
 
-  protected rendered: boolean;
-  protected style?: ElementStyle;
-  protected registry?: Registry;
+//   #fontInfo: Required<FontInfo>;
+//   #fontScale: number;
+//   #text = '';
+//   #metricsValid = false;
+//   #textMetrics: TextMetrics = {
+//     fontBoundingBoxAscent: 0,
+//     fontBoundingBoxDescent: 0,
+//     actualBoundingBoxAscent: 0,
+//     actualBoundingBoxDescent: 0,
+//     actualBoundingBoxLeft: 0,
+//     actualBoundingBoxRight: 0,
+//     width: 0,
+//   };
 
-  #fontInfo: Required<FontInfo>;
-  #fontScale: number;
-  #text = '';
-  #metricsValid = false;
-  #textMetrics: TextMetrics = {
-    fontBoundingBoxAscent: 0,
-    fontBoundingBoxDescent: 0,
-    actualBoundingBoxAscent: 0,
-    actualBoundingBoxDescent: 0,
-    actualBoundingBoxLeft: 0,
-    actualBoundingBoxRight: 0,
-    width: 0,
-  };
-
-  #height: number = 0;
-  #width: number = 0;
-  protected xShift: number = 0;
-  protected yShift: number = 0;
-  protected x: number = 0;
-  protected y: number = 0;
+//   #height: number = 0;
+//   #width: number = 0;
+//   protected xShift: number = 0;
+//   protected yShift: number = 0;
+//   protected x: number = 0;
+//   protected y: number = 0;
 
   constructor(category?: string) {
-    this.#attrs = {
-      id: Element.newID(),
-      type: category ?? (<typeof Element>this.constructor).CATEGORY,
-      class: '',
-    };
+//     this.#attrs = {
+//       id: Element.newID(),
+//       type: category ?? (<typeof Element>this.constructor).CATEGORY,
+//       class: '',
+//     };
 
-    this.rendered = false;
-    this.#fontInfo = Metrics.getFontInfo(this.#attrs.type);
-    this.#fontScale = Metrics.get(`${this.#attrs.type}.fontScale`);
+//     this.rendered = false;
+//     this.#fontInfo = Metrics.getFontInfo(this.#attrs.type);
+//     this.#fontScale = Metrics.get(`${this.#attrs.type}.fontScale`);
 
-    // If a default registry exist, then register with it right away.
-    Registry.getDefaultRegistry()?.register(this);
+//     // If a default registry exist, then register with it right away.
+//     Registry.getDefaultRegistry()?.register(this);
   }
 
-  /**
-   * Adds a child Element to the Element, which lets it inherit the
-   * same style as the parent when setGroupStyle() is called.
-   *
-   * Examples of children are noteheads and stems.  Modifiers such
-   * as Accidentals are generally not set as children.
-   *
-   * Note that StaveNote calls setGroupStyle() when setStyle() is called.
-   */
-  addChildElement(child: Element): this {
-    this.children.push(child);
-    return this;
-  }
+//   /**
+//    * Adds a child Element to the Element, which lets it inherit the
+//    * same style as the parent when setGroupStyle() is called.
+//    *
+//    * Examples of children are noteheads and stems.  Modifiers such
+//    * as Accidentals are generally not set as children.
+//    *
+//    * Note that StaveNote calls setGroupStyle() when setStyle() is called.
+//    */
+//   addChildElement(child: Element): this {
+//     this.children.push(child);
+//     return this;
+//   }
 
-  getCategory(): string {
-    return this.#attrs.type;
-  }
+//   getCategory(): string {
+//     return this.#attrs.type;
+//   }
 
-  /**
-   * Set the element style used to render.
-   *
-   * Example:
-   * ```typescript
-   * element.setStyle({ fillStyle: 'red', strokeStyle: 'red' });
-   * element.draw();
-   * ```
-   * Note: If the element draws additional sub-elements (ie.: Modifiers in a Stave),
-   * the style can be applied to all of them by means of the context:
-   * ```typescript
-   * element.setStyle({ fillStyle: 'red', strokeStyle: 'red' });
-   * element.getContext().setFillStyle('red');
-   * element.getContext().setStrokeStyle('red');
-   * element.draw();
-   * ```
-   * or using drawWithStyle:
-   * ```typescript
-   * element.setStyle({ fillStyle: 'red', strokeStyle: 'red' });
-   * element.drawWithStyle();
-   * ```
-   */
-  setStyle(style: ElementStyle | undefined): this {
-    this.style = style;
-    return this;
-  }
+//   /**
+//    * Set the element style used to render.
+//    *
+//    * Example:
+//    * ```typescript
+//    * element.setStyle({ fillStyle: 'red', strokeStyle: 'red' });
+//    * element.draw();
+//    * ```
+//    * Note: If the element draws additional sub-elements (ie.: Modifiers in a Stave),
+//    * the style can be applied to all of them by means of the context:
+//    * ```typescript
+//    * element.setStyle({ fillStyle: 'red', strokeStyle: 'red' });
+//    * element.getContext().setFillStyle('red');
+//    * element.getContext().setStrokeStyle('red');
+//    * element.draw();
+//    * ```
+//    * or using drawWithStyle:
+//    * ```typescript
+//    * element.setStyle({ fillStyle: 'red', strokeStyle: 'red' });
+//    * element.drawWithStyle();
+//    * ```
+//    */
+//   setStyle(style: ElementStyle | undefined): this {
+//     this.style = style;
+//     return this;
+//   }
+//
+//   /** Set the element & associated children style used for rendering. */
+//   setGroupStyle(style: ElementStyle): this {
+//     this.style = style;
+//     this.children.forEach((child) => child.setGroupStyle(style));
+//     return this;
+//   }
 
-  /** Set the element & associated children style used for rendering. */
-  setGroupStyle(style: ElementStyle): this {
-    this.style = style;
-    this.children.forEach((child) => child.setGroupStyle(style));
-    return this;
-  }
+//   /** Get the element style used for rendering. */
+//   getStyle(): ElementStyle | undefined {
+//     return this.style;
+//   }
 
-  /** Get the element style used for rendering. */
-  getStyle(): ElementStyle | undefined {
-    return this.style;
-  }
+//   /** Apply the element style to `context`. */
+//   applyStyle(
+//     context: RenderContext | undefined = this.#context,
+//     style: ElementStyle | undefined = this.getStyle()
+//   ): this {
+//     if (!style) return this;
+//     if (!context) return this;
+//
+//     context.save();
+//     if (style.shadowColor) context.setShadowColor(style.shadowColor);
+//     if (style.shadowBlur) context.setShadowBlur(style.shadowBlur);
+//     if (style.fillStyle) context.setFillStyle(style.fillStyle);
+//     if (style.strokeStyle) context.setStrokeStyle(style.strokeStyle);
+//     if (style.lineWidth) context.setLineWidth(style.lineWidth);
+//     if (style.lineDash) context.setLineDash(style.lineDash.split(' ').map(Number));
+//
+//     return this;
+//   }
 
-  /** Apply the element style to `context`. */
-  applyStyle(
-    context: RenderContext | undefined = this.#context,
-    style: ElementStyle | undefined = this.getStyle()
-  ): this {
-    if (!style) return this;
-    if (!context) return this;
+//   /** Restore the style of `context`. */
+//   restoreStyle(
+//     context: RenderContext | undefined = this.#context,
+//     style: ElementStyle | undefined = this.getStyle()
+//   ): this {
+//     if (!style) return this;
+//     if (!context) return this;
+//     context.restore();
+//     return this;
+//   }
 
-    context.save();
-    if (style.shadowColor) context.setShadowColor(style.shadowColor);
-    if (style.shadowBlur) context.setShadowBlur(style.shadowBlur);
-    if (style.fillStyle) context.setFillStyle(style.fillStyle);
-    if (style.strokeStyle) context.setStrokeStyle(style.strokeStyle);
-    if (style.lineWidth) context.setLineWidth(style.lineWidth);
-    if (style.lineDash) context.setLineDash(style.lineDash.split(' ').map(Number));
-
-    return this;
-  }
-
-  /** Restore the style of `context`. */
-  restoreStyle(
-    context: RenderContext | undefined = this.#context,
-    style: ElementStyle | undefined = this.getStyle()
-  ): this {
-    if (!style) return this;
-    if (!context) return this;
-    context.restore();
-    return this;
-  }
-
-  /**
-   * Draw the element and all its sub-elements (ie.: Modifiers in a Stave)
-   * with the element's style (see `getStyle()` and `setStyle()`)
-   */
-  drawWithStyle(): void {
-    this.checkContext();
-    this.applyStyle();
-    this.draw();
-    this.restoreStyle();
-  }
+//   /**
+//    * Draw the element and all its sub-elements (ie.: Modifiers in a Stave)
+//    * with the element's style (see `getStyle()` and `setStyle()`)
+//    */
+//   drawWithStyle(): void {
+//     this.checkContext();
+//     this.applyStyle();
+//     this.draw();
+//     this.restoreStyle();
+//   }
 
   /** Draw an element. */
-  draw(): void {
-    throw new RuntimeError('Element', 'Draw not defined');
-  }
+//   draw(): void {
+//     throw new RuntimeError('Element', 'Draw not defined');
+//   }
 
-  /** Check if it has a class label (An element can have multiple class labels). */
-  hasClass(className: string): boolean {
-    if (!this.#attrs.class) return false;
-    return this.#attrs.class?.split(' ').indexOf(className) !== -1;
-  }
+//   /** Check if it has a class label (An element can have multiple class labels). */
+//   hasClass(className: string): boolean {
+//     if (!this.#attrs.class) return false;
+//     return this.#attrs.class?.split(' ').indexOf(className) !== -1;
+//   }
+//
+//   /** Add a class label (An element can have multiple class labels). */
+//   addClass(className: string): this {
+//     if (this.hasClass(className)) return this;
+//     if (!this.#attrs.class) this.#attrs.class = `${className}`;
+//     else this.#attrs.class = `${this.#attrs.class} ${className}`;
+//     this.registry?.onUpdate({
+//       id: this.#attrs.id,
+//       name: 'class',
+//       value: className,
+//       oldValue: undefined,
+//     });
+//     return this;
+//   }
+//
+//   /** Remove a class label (An element can have multiple class labels). */
+//   removeClass(className: string): this {
+//     if (!this.hasClass(className)) return this;
+//     const arr = this.#attrs.class?.split(' ');
+//     if (arr) {
+//       arr.splice(arr.indexOf(className));
+//       this.#attrs.class = arr.join(' ');
+//     }
+//     this.registry?.onUpdate({
+//       id: this.#attrs.id,
+//       name: 'class',
+//       value: undefined,
+//       oldValue: className,
+//     });
+//     return this;
+//   }
 
-  /** Add a class label (An element can have multiple class labels). */
-  addClass(className: string): this {
-    if (this.hasClass(className)) return this;
-    if (!this.#attrs.class) this.#attrs.class = `${className}`;
-    else this.#attrs.class = `${this.#attrs.class} ${className}`;
-    this.registry?.onUpdate({
-      id: this.#attrs.id,
-      name: 'class',
-      value: className,
-      oldValue: undefined,
-    });
-    return this;
-  }
+//   /** Call back from registry after the element is registered. */
+//   onRegister(registry: Registry): this {
+//     this.registry = registry;
+//     return this;
+//   }
 
-  /** Remove a class label (An element can have multiple class labels). */
-  removeClass(className: string): this {
-    if (!this.hasClass(className)) return this;
-    const arr = this.#attrs.class?.split(' ');
-    if (arr) {
-      arr.splice(arr.indexOf(className));
-      this.#attrs.class = arr.join(' ');
-    }
-    this.registry?.onUpdate({
-      id: this.#attrs.id,
-      name: 'class',
-      value: undefined,
-      oldValue: className,
-    });
-    return this;
-  }
+//   /** Return the rendered status. */
+//   isRendered(): boolean {
+//     return this.rendered;
+//   }
+//
+//   /** Set the rendered status. */
+//   setRendered(rendered = true): this {
+//     this.rendered = rendered;
+//     return this;
+//   }
 
-  /** Call back from registry after the element is registered. */
-  onRegister(registry: Registry): this {
-    this.registry = registry;
-    return this;
-  }
-
-  /** Return the rendered status. */
-  isRendered(): boolean {
-    return this.rendered;
-  }
-
-  /** Set the rendered status. */
-  setRendered(rendered = true): this {
-    this.rendered = rendered;
-    return this;
-  }
-
-  /** Return the element attributes. */
-  getAttributes(): ElementAttributes {
-    return this.#attrs;
-  }
-
-  /** Return an attribute, such as 'id', 'type' or 'class'. */
-  // eslint-disable-next-line
-  getAttribute(name: string): any {
-    return this.#attrs[name];
-  }
+//   /** Return the element attributes. */
+//   getAttributes(): ElementAttributes {
+//     return this.#attrs;
+//   }
+//
+//   /** Return an attribute, such as 'id', 'type' or 'class'. */
+//   // eslint-disable-next-line
+//   getAttribute(name: string): any {
+//     return this.#attrs[name];
+//   }
 
   /** Return associated SVGElement. */
   getSVGElement(suffix: string = ''): SVGElement | undefined {
@@ -329,40 +329,40 @@ export class Element {
   }
 
   /** Set an attribute such as 'id', 'class', or 'type'. */
-  setAttribute(name: string, value: string | undefined): this {
-    const oldID = this.#attrs.id;
-    const oldValue = this.#attrs[name];
-    this.#attrs[name] = value;
-    // Register with old id to support id changes.
-    this.registry?.onUpdate({ id: oldID, name, value, oldValue });
-    return this;
-  }
-
-  /** Get the boundingBox. */
-  getBoundingBox(): BoundingBox {
-    return new BoundingBox(
-      this.x + this.xShift,
-      this.y + this.yShift - this.textMetrics.actualBoundingBoxAscent,
-      this.width,
-      this.height
-    );
-  }
+//   setAttribute(name: string, value: string | undefined): this {
+//     const oldID = this.#attrs.id;
+//     const oldValue = this.#attrs[name];
+//     this.#attrs[name] = value;
+//     // Register with old id to support id changes.
+//     this.registry?.onUpdate({ id: oldID, name, value, oldValue });
+//     return this;
+// //   }
+//
+//   /** Get the boundingBox. */
+//   getBoundingBox(): BoundingBox {
+//     return new BoundingBox(
+//       this.x + this.xShift,
+//       this.y + this.yShift - this.textMetrics.actualBoundingBoxAscent,
+//       this.width,
+//       this.height
+//     );
+//   }
 
   /** Return the context, such as an SVGContext or CanvasContext object. */
-  getContext(): RenderContext | undefined {
-    return this.#context;
-  }
+//   getContext(): RenderContext | undefined {
+//     return this.#context;
+//   }
 
   /** Set the context to an SVGContext or CanvasContext object */
-  setContext(context?: RenderContext): this {
-    this.#context = context;
-    return this;
-  }
+//   setContext(context?: RenderContext): this {
+//     this.#context = context;
+//     return this;
+//   }
 
   /** Validate and return the rendering context. */
-  checkContext(): RenderContext {
-    return defined(this.#context, 'NoContext', 'No rendering context attached to instance.');
-  }
+//   checkContext(): RenderContext {
+//     return defined(this.#context, 'NoContext', 'No rendering context attached to instance.');
+//   }
 
   //////////////////////////////////////////////////////////////////////////////////////////////////
   // Font Handling
