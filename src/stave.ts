@@ -500,54 +500,54 @@ export class Stave extends Element {
     return this;
   }
 
-  /**
-   * Add a clef to the stave.
-   *
-   * Example:
-   *
-   * stave.addClef('treble')
-   * @param clef clef (treble|bass|...) see {@link Clef.types}
-   * @param size
-   * @param annotation
-   * @param position
-   * @returns
-   */
-  addClef(clef: string, size?: string, annotation?: string, position?: number): this {
-    if (position === undefined || position === StaveModifierPosition.BEGIN) {
-      this.clef = clef;
-    } else if (position === StaveModifierPosition.END) {
-      this.endClef = clef;
-    }
-
-    this.addModifier(new Clef(clef, size, annotation), position);
-    return this;
-  }
+//   /**
+//    * Add a clef to the stave.
+//    *
+//    * Example:
+//    *
+//    * stave.addClef('treble')
+//    * @param clef clef (treble|bass|...) see {@link Clef.types}
+//    * @param size
+//    * @param annotation
+//    * @param position
+//    * @returns
+//    */
+//   addClef(clef: string, size?: string, annotation?: string, position?: number): this {
+//     if (position === undefined || position === StaveModifierPosition.BEGIN) {
+//       this.clef = clef;
+//     } else if (position === StaveModifierPosition.END) {
+//       this.endClef = clef;
+//     }
+//
+//     this.addModifier(new Clef(clef, size, annotation), position);
+//     return this;
+//   }
 
   addEndClef(clef: string, size?: string, annotation?: string): this {
     this.addClef(clef, size, annotation, StaveModifierPosition.END);
     return this;
   }
 
-  /**
-   * Add a time signature to the stave
-   *
-   * Example:
-   *
-   * `stave.addTimeSignature('4/4');`
-   * @param timeSpec time signature specification `(C\||C|\d\/\d)`
-   * @param customPadding
-   * @param position
-   * @returns
-   */
-  addTimeSignature(timeSpec: string, customPadding?: number, position?: number): this {
-    this.addModifier(new TimeSignature(timeSpec, customPadding), position);
-    return this;
-  }
+//   /**
+//    * Add a time signature to the stave
+//    *
+//    * Example:
+//    *
+//    * `stave.addTimeSignature('4/4');`
+//    * @param timeSpec time signature specification `(C\||C|\d\/\d)`
+//    * @param customPadding
+//    * @param position
+//    * @returns
+//    */
+//   addTimeSignature(timeSpec: string, customPadding?: number, position?: number): this {
+//     this.addModifier(new TimeSignature(timeSpec, customPadding), position);
+//     return this;
+//   }
 
-  addEndTimeSignature(timeSpec: string, customPadding?: number): this {
-    this.addTimeSignature(timeSpec, customPadding, StaveModifierPosition.END);
-    return this;
-  }
+//   addEndTimeSignature(timeSpec: string, customPadding?: number): this {
+//     this.addTimeSignature(timeSpec, customPadding, StaveModifierPosition.END);
+//     return this;
+//   }
 
   // Deprecated
   addTrebleGlyph(): this {

@@ -33,9 +33,9 @@ export interface FormatterMetrics {
  * has a duration, i.e., Tickables occupy space in the musical rendering dimension.
  */
 export abstract class Tickable extends Element {
-  static get CATEGORY(): string {
-    return Category.Tickable;
-  }
+//   static get CATEGORY(): string {
+//     return Category.Tickable;
+//   }
 
   protected ignoreTicks: boolean;
   protected tupletStack: Tuplet[];

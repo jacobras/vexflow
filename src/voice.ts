@@ -28,9 +28,9 @@ export enum VoiceMode {
  * `Voice` is mainly a container object to group `Tickables` for formatting.
  */
 export class Voice extends Element {
-  static get CATEGORY(): string {
-    return Category.Voice;
-  }
+//   static get CATEGORY(): string {
+//     return Category.Voice;
+//   }
 
   /**
    * Modes allow the addition of ticks in three different ways:
@@ -44,7 +44,7 @@ export class Voice extends Element {
 
   protected resolutionMultiplier: number = 1;
   protected smallestTickCount: Fraction;
-  protected stave?: Stave;
+//   protected stave?: Stave;
   protected mode: VoiceMode = VoiceMode.STRICT;
   protected expTicksUsed?: number;
   protected preFormatted: boolean = false;
@@ -53,7 +53,7 @@ export class Voice extends Element {
   protected readonly totalTicks: Fraction;
   protected readonly ticksUsed: Fraction = new Fraction(0, 1);
   protected readonly largestTickWidth: number = 0;
-  protected readonly tickables: Tickable[] = [];
+//   protected readonly tickables: Tickable[] = [];
   protected readonly time: Required<VoiceTime>;
 
   constructor(time?: VoiceTime | string) {

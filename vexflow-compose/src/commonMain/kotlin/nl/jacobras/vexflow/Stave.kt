@@ -39,7 +39,7 @@ class Stave(private val options: StaveOptions) : Element(category = Category.Sta
     private var startX = 0
     private var endX = 0
     private var clef: String? = null
-    private val endClef: String? = null
+    private var endClef: String? = null
     private var formatted = false
     private val measure = 0
     private var bounds: Bounds? = null
@@ -349,6 +349,55 @@ class Stave(private val options: StaveOptions) : Element(category = Category.Sta
             ctx.fillText("" + this.measure, this.x - textWidth / 2, y);
             ctx.restore();
         }
+    }
+
+    /**
+     * Add a clef to the stave.
+     *
+     * Example:
+     *
+     * stave.addClef('treble')
+     * @param clef clef (treble|bass|...) see {@link Clef.types}
+     * @param size
+     * @param annotation
+     * @param position
+     * @returns
+     */
+    fun addClef(
+        clef: String,
+        size: String? = null,
+        annotation: String? = null,
+        position: StaveModifierPosition? = StaveModifierPosition.BEGIN
+    ): Stave {
+        if (position == null || position == StaveModifierPosition.BEGIN) {
+            this.clef = clef
+        } else if (position == StaveModifierPosition.END) {
+            this.endClef = clef
+        }
+
+        this.addModifier(Clef(clef, size, annotation), position)
+        return this
+    }
+
+    /**
+     * Add a time signature to the stave
+     *
+     * Example:
+     *
+     * `stave.addTimeSignature('4/4');`
+     * @param timeSpec time signature specification `(C\||C|\d\/\d)`
+     * @param customPadding
+     * @param position
+     * @returns
+     */
+    fun addTimeSignature(timeSpec: String, customPadding: Int? = null, position: StaveModifierPosition? = null): Stave {
+        this.addModifier(TimeSignature(timeSpec, customPadding), position)
+        return this
+    }
+
+    fun addEndTimeSignature(timeSpec: String, customPadding: Int?): Stave {
+        this.addTimeSignature(timeSpec, customPadding, StaveModifierPosition.END)
+        return this
     }
 
     companion object {

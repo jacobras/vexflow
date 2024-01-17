@@ -9,41 +9,56 @@ import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.drawscope.Stroke
 import nl.jacobras.vexflow.FontInfo
 import nl.jacobras.vexflow.RenderContext
-import nl.jacobras.vexflow.Stave
-import nl.jacobras.vexflow.StaveLineConfig
-import nl.jacobras.vexflow.StaveOptions
+import nl.jacobras.vexflow.SystemStave
 import nl.jacobras.vexflow.TextMeasure
+import nl.jacobras.vexflow.VexFlow
 
 @Composable
 fun ExampleSheet(modifier: Modifier = Modifier) {
-    Canvas(modifier = modifier) {
-        Stave(
-            options = StaveOptions(
-                bottomTextPosition = 0,
-                lineConfig = mutableListOf(
-                    StaveLineConfig(visible = true),
-                    StaveLineConfig(visible = true),
-                    StaveLineConfig(visible = true),
-                    StaveLineConfig(visible = true),
-                    StaveLineConfig(visible = true)
-                ),
-                spaceBelowStaffLn = 0,
-                spaceAboveStaffLn = 0,
-                verticalBarWidth = 10,
-                fillStyle = null,
-                leftBar = false,
-                rightBar = false,
-                spacingBetweenLinesPx = 10,
-                topTextPosition = 0,
-                numLines = 5,
+    val score = VexFlow.EasyScore()
+    val system = VexFlow.System()
+
+    system
+        .addStave(
+            SystemStave(
+                voices = listOf(
+                    score.voice(score.notes("C#5/q, B4, A4, G#4"))
+                )
             )
         )
-            .apply {
-                context = CanvasRenderer(this@Canvas)
-                attrs.id = "testStave"
-                width = 200 // TODO: from system or something
-            }
-            .draw()
+        .addClef("treble")
+        .addTimeSignature("4/4")
+
+    Canvas(modifier = modifier) {
+        system.draw()
+
+//        Stave(
+//            options = StaveOptions(
+//                bottomTextPosition = 0,
+//                lineConfig = mutableListOf(
+//                    StaveLineConfig(visible = true),
+//                    StaveLineConfig(visible = true),
+//                    StaveLineConfig(visible = true),
+//                    StaveLineConfig(visible = true),
+//                    StaveLineConfig(visible = true)
+//                ),
+//                spaceBelowStaffLn = 0,
+//                spaceAboveStaffLn = 0,
+//                verticalBarWidth = 10,
+//                fillStyle = null,
+//                leftBar = false,
+//                rightBar = false,
+//                spacingBetweenLinesPx = 10,
+//                topTextPosition = 0,
+//                numLines = 5,
+//            )
+//        )
+//            .apply {
+//                context = CanvasRenderer(this@Canvas)
+//                attrs.id = "testStave"
+//                width = 200 // TODO: from system or something
+//            }
+//            .draw()
     }
 }
 

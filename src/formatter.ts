@@ -27,23 +27,23 @@ interface Distance {
   fromTickablePx?: number;
 }
 
-export interface FormatterOptions {
-  /** Defaults to Tables.SOFTMAX_FACTOR. */
-  softmaxFactor?: number;
+// export interface FormatterOptions {
+//   /** Defaults to Tables.SOFTMAX_FACTOR. */
+//   softmaxFactor?: number;
+//
+//   /** Defaults to `false`. */
+//   globalSoftmax?: boolean;
+//
+//   /** Defaults to 5. */
+//   maxIterations?: number;
+// }
 
-  /** Defaults to `false`. */
-  globalSoftmax?: boolean;
-
-  /** Defaults to 5. */
-  maxIterations?: number;
-}
-
-export interface FormatParams {
-  alignRests?: boolean;
-  stave?: Stave;
-  context?: RenderContext;
-  autoBeam?: boolean;
-}
+// export interface FormatParams {
+//   alignRests?: boolean;
+//   stave?: Stave;
+//   context?: RenderContext;
+//   autoBeam?: boolean;
+// }
 
 export interface AlignmentContexts<T> {
   list: number[];

@@ -13,9 +13,9 @@ import { Category } from './typeguard';
 import { RuntimeError } from './util';
 
 export abstract class StemmableNote extends Note {
-  static get CATEGORY(): string {
-    return Category.StemmableNote;
-  }
+//   static get CATEGORY(): string {
+//     return Category.StemmableNote;
+//   }
 
   stemDirection?: number;
   stem?: Stem;

@@ -52,18 +52,18 @@ import { VibratoBracket } from './vibratobracket';
 import { Voice, VoiceTime } from './voice';
 import { isHTMLCanvas } from './web';
 
-export interface FactoryOptions {
-  stave?: {
-    space: number;
-  };
-  renderer?: {
-    elementId: string | null;
-    backend?: number;
-    width: number;
-    height: number;
-    background?: string;
-  };
-}
+// export interface FactoryOptions {
+//   stave?: {
+//     space: number;
+//   };
+//   renderer?: {
+//     elementId: string | null;
+//     backend?: number;
+//     width: number;
+//     height: number;
+//     background?: string;
+//   };
+// }
 
 // eslint-disable-next-line
 function L(...args: any[]) {
@@ -90,12 +90,12 @@ export class Factory {
     return new Factory({ renderer: { elementId, width, height } });
   }
 
-  protected options: Required<FactoryOptions>;
+//   protected options: Required<FactoryOptions>;
 
-  protected stave?: Stave;
-  protected context!: RenderContext;
-  protected staves!: Stave[];
-  protected voices!: Voice[];
+//   protected stave?: Stave;
+//   protected context!: RenderContext;
+//   protected staves!: Stave[];
+//   protected voices!: Voice[];
   protected renderQ!: Element[];
   protected systems!: System[];
 
@@ -184,22 +184,22 @@ export class Factory {
 
   /** Return pixels from current stave spacing. */
 
-  Stave(params?: { x?: number; y?: number; width?: number; options?: StaveOptions }): Stave {
-    const staveSpace = this.options.stave.space;
-    const p = {
-      x: 0,
-      y: 0,
-      width: this.options.renderer.width - staveSpace * 1.0,
-      options: { spacingBetweenLinesPx: staveSpace * 1.0 },
-      ...params,
-    };
-
-    const stave: Stave = new Stave(p.x, p.y, p.width, p.options);
-    this.staves.push(stave);
-    stave.setContext(this.context);
-    this.stave = stave;
-    return stave;
-  }
+//   Stave(params?: { x?: number; y?: number; width?: number; options?: StaveOptions }): Stave {
+//     const staveSpace = this.options.stave.space;
+//     const p = {
+//       x: 0,
+//       y: 0,
+//       width: this.options.renderer.width - staveSpace * 1.0,
+//       options: { spacingBetweenLinesPx: staveSpace * 1.0 },
+//       ...params,
+//     };
+//
+//     const stave: Stave = new Stave(p.x, p.y, p.width, p.options);
+//     this.staves.push(stave);
+//     stave.setContext(this.context);
+//     this.stave = stave;
+//     return stave;
+//   }
 
   TabStave(params?: { x?: number; y?: number; width?: number; options?: StaveOptions }): TabStave {
     const staveSpace = this.options.stave.space;

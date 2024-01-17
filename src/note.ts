@@ -91,9 +91,9 @@ export abstract class Note extends Tickable {
   //////////////////////////////////////////////////////////////////////////////////////////////////
   // STATIC MEMBERS
 
-  static get CATEGORY(): string {
-    return Category.Note;
-  }
+//   static get CATEGORY(): string {
+//     return Category.Note;
+//   }
 
   // Return a glyph given duration and type. The type can be a custom glyph code from customNoteHeads.
   // The default type is a regular note ('n').

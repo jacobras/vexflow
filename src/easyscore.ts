@@ -17,14 +17,14 @@ import { TupletOptions } from './tuplet';
 import { defined, log, RuntimeError } from './util';
 import { Voice } from './voice';
 
-// To enable logging for this class. Set `VexFlow.EasyScore.DEBUG` to `true`.
-// eslint-disable-next-line
-function L(...args: any[]): void {
-  if (EasyScore.DEBUG) log('VexFlow.EasyScore', args);
-}
+// // To enable logging for this class. Set `VexFlow.EasyScore.DEBUG` to `true`.
+// // eslint-disable-next-line
+// function L(...args: any[]): void {
+//   if (EasyScore.DEBUG) log('VexFlow.EasyScore', args);
+// }
 
 // eslint-disable-next-line
-export type CommitHook = (obj: any, note: StemmableNote, builder: Builder) => void;
+// export type CommitHook = (obj: any, note: StemmableNote, builder: Builder) => void;
 
 export class EasyScoreGrammar implements Grammar {
   builder: Builder;
@@ -228,168 +228,168 @@ export class Piece {
   }
 }
 
-export interface BuilderElements {
-  notes: StemmableNote[];
-  accidentals: (Accidental | undefined)[][];
-}
+// export interface BuilderElements {
+//   notes: StemmableNote[];
+//   accidentals: (Accidental | undefined)[][];
+// }
 
 // Extending Record<string, any> allows arbitrary properties via Builder.reset() & EasyScore.parse().
 // eslint-disable-next-line
-export interface BuilderOptions extends Record<string, any> {
-  stem?: string;
-  clef?: string;
-}
+// export interface BuilderOptions extends Record<string, any> {
+//   stem?: string;
+//   clef?: string;
+// }
 
-export class Builder {
-  factory: Factory;
-  // Initialized by the constructor via this.reset().
-  elements!: BuilderElements;
-  // Initialized by the constructor via this.reset().
-  options!: BuilderOptions;
-  // Initialized by the constructor via this.resetPiece().
-  piece!: Piece;
-  commitHooks: CommitHook[] = [];
-  rollingDuration!: string;
-
-  constructor(factory: Factory) {
-    this.factory = factory;
-    this.reset();
-  }
-
-  reset(options?: BuilderOptions): void {
-    this.options = {
-      stem: 'auto',
-      clef: 'treble',
-      ...options,
-    };
-    this.elements = { notes: [], accidentals: [] };
-    this.rollingDuration = '8';
-    this.resetPiece();
-  }
-
-  getFactory(): Factory {
-    return this.factory;
-  }
-
-  getElements(): BuilderElements {
-    return this.elements;
-  }
-
-  addCommitHook(commitHook: CommitHook): void {
-    this.commitHooks.push(commitHook);
-  }
-
-  resetPiece(): void {
-    L('resetPiece');
-    this.piece = new Piece(this.rollingDuration);
-  }
-
-  setNoteDots(dots: Match[]): void {
-    L('setNoteDots:', dots);
-    if (dots) this.piece.dots = dots.length;
-  }
-
-  setNoteDuration(duration?: string): void {
-    L('setNoteDuration:', duration);
-    this.rollingDuration = this.piece.duration = duration || this.rollingDuration;
-  }
-
-  setNoteType(type?: string): void {
-    L('setNoteType:', type);
-    if (type) this.piece.type = type;
-  }
-
-  addNoteOption(key: string, value: string): void {
-    L('addNoteOption: key:', key, 'value:', value);
-    this.piece.options[key] = value;
-  }
-
-  addNote(key?: string, accid?: string | null, octave?: string): void {
-    L('addNote:', key, accid, octave);
-    this.piece.chord.push({
-      key: key as string,
-      accid,
-      octave,
-    });
-  }
-
-  addSingleNote(key: string, accid?: string | null, octave?: string): void {
-    L('addSingleNote:', key, accid, octave);
-    this.addNote(key, accid, octave);
-  }
-
-  // notes is an array with 3 entries
-  addChord(notes: Match[]): void {
-    L('startChord');
-    if (typeof notes[0] !== 'object') {
-      this.addSingleNote(notes[0]);
-    } else {
-      notes.forEach((n) => {
-        if (n) this.addNote(...(n as string[])); // n => [string, string | null, string]
-      });
-    }
-    L('endChord');
-  }
-
-  commitPiece(): void {
-    L('commitPiece');
-    const { factory } = this;
-
-    if (!factory) return;
-
-    const options = { ...this.options, ...this.piece.options };
-
-    // reset() sets this.options.stem & this.options.clef but we check to make sure nothing has changed.
-    // e.g., auto | up | down
-    const stem = defined(options.stem, 'BadArguments', 'options.stem is not defined').toLowerCase();
-    // e.g., treble | bass
-    const clef = defined(options.clef, 'BadArguments', 'options.clef is not defined').toLowerCase();
-
-    const { chord, duration, dots, type } = this.piece;
-
-    // Create a string[] that will be assigned to the .keys property of the StaveNote.
-    // Each string in the array represents a note pitch and is of the form: {NoteName}{Accidental}/{Octave}
-    // Only standard accidentals are included in the .keys property. Microtonal accidentals are not included.
-    const standardAccidentals = Music.accidentals;
-    const keys = chord.map(
-      (notePiece) =>
-        notePiece.key +
-        (standardAccidentals.includes(notePiece.accid ?? '') ? notePiece.accid : '') +
-        '/' +
-        notePiece.octave
-    );
-    const autoStem = stem === 'auto'; // StaveNoteStruct expects the underscore & lowercase.
-
-    // Build a GhostNote or StaveNote using the information we gathered.
-    const note =
-      type?.toLowerCase() === 'g'
-        ? factory.GhostNote({ duration, dots })
-        : factory.StaveNote({ keys, duration, dots, type, clef, autoStem });
-    if (!autoStem) note.setStemDirection(stem === 'up' ? Stem.UP : Stem.DOWN);
-
-    // Attach accidentals.
-    const accidentals: (Accidental | undefined)[] = [];
-    chord.forEach((notePiece: NotePiece, index: number) => {
-      const accid = notePiece.accid;
-      if (typeof accid === 'string') {
-        const accidental = factory.Accidental({ type: accid });
-        note.addModifier(accidental, index);
-        accidentals.push(accidental);
-      } else {
-        accidentals.push(undefined);
-      }
-    });
-
-    // Attach dots.
-    for (let i = 0; i < dots; i++) Dot.buildAndAttach([note], { all: true });
-
-    this.commitHooks.forEach((commitHook) => commitHook(options, note, this));
-
-    this.elements.notes.push(note);
-    this.elements.accidentals.push(accidentals);
-    this.resetPiece();
-  }
-}
+// export class Builder {
+//   factory: Factory;
+//   // Initialized by the constructor via this.reset().
+//   elements!: BuilderElements;
+//   // Initialized by the constructor via this.reset().
+//   options!: BuilderOptions;
+//   // Initialized by the constructor via this.resetPiece().
+//   piece!: Piece;
+//   commitHooks: CommitHook[] = [];
+//   rollingDuration!: string;
+//
+//   constructor(factory: Factory) {
+//     this.factory = factory;
+//     this.reset();
+//   }
+//
+//   reset(options?: BuilderOptions): void {
+//     this.options = {
+//       stem: 'auto',
+//       clef: 'treble',
+//       ...options,
+//     };
+//     this.elements = { notes: [], accidentals: [] };
+//     this.rollingDuration = '8';
+//     this.resetPiece();
+//   }
+//
+//   getFactory(): Factory {
+//     return this.factory;
+//   }
+//
+//   getElements(): BuilderElements {
+//     return this.elements;
+//   }
+//
+//   addCommitHook(commitHook: CommitHook): void {
+//     this.commitHooks.push(commitHook);
+//   }
+//
+//   resetPiece(): void {
+//     L('resetPiece');
+//     this.piece = new Piece(this.rollingDuration);
+//   }
+//
+//   setNoteDots(dots: Match[]): void {
+//     L('setNoteDots:', dots);
+//     if (dots) this.piece.dots = dots.length;
+//   }
+//
+//   setNoteDuration(duration?: string): void {
+//     L('setNoteDuration:', duration);
+//     this.rollingDuration = this.piece.duration = duration || this.rollingDuration;
+//   }
+//
+//   setNoteType(type?: string): void {
+//     L('setNoteType:', type);
+//     if (type) this.piece.type = type;
+//   }
+//
+//   addNoteOption(key: string, value: string): void {
+//     L('addNoteOption: key:', key, 'value:', value);
+//     this.piece.options[key] = value;
+//   }
+//
+//   addNote(key?: string, accid?: string | null, octave?: string): void {
+//     L('addNote:', key, accid, octave);
+//     this.piece.chord.push({
+//       key: key as string,
+//       accid,
+//       octave,
+//     });
+//   }
+//
+//   addSingleNote(key: string, accid?: string | null, octave?: string): void {
+//     L('addSingleNote:', key, accid, octave);
+//     this.addNote(key, accid, octave);
+//   }
+//
+//   // notes is an array with 3 entries
+//   addChord(notes: Match[]): void {
+//     L('startChord');
+//     if (typeof notes[0] !== 'object') {
+//       this.addSingleNote(notes[0]);
+//     } else {
+//       notes.forEach((n) => {
+//         if (n) this.addNote(...(n as string[])); // n => [string, string | null, string]
+//       });
+//     }
+//     L('endChord');
+//   }
+//
+//   commitPiece(): void {
+//     L('commitPiece');
+//     const { factory } = this;
+//
+//     if (!factory) return;
+//
+//     const options = { ...this.options, ...this.piece.options };
+//
+//     // reset() sets this.options.stem & this.options.clef but we check to make sure nothing has changed.
+//     // e.g., auto | up | down
+//     const stem = defined(options.stem, 'BadArguments', 'options.stem is not defined').toLowerCase();
+//     // e.g., treble | bass
+//     const clef = defined(options.clef, 'BadArguments', 'options.clef is not defined').toLowerCase();
+//
+//     const { chord, duration, dots, type } = this.piece;
+//
+//     // Create a string[] that will be assigned to the .keys property of the StaveNote.
+//     // Each string in the array represents a note pitch and is of the form: {NoteName}{Accidental}/{Octave}
+//     // Only standard accidentals are included in the .keys property. Microtonal accidentals are not included.
+//     const standardAccidentals = Music.accidentals;
+//     const keys = chord.map(
+//       (notePiece) =>
+//         notePiece.key +
+//         (standardAccidentals.includes(notePiece.accid ?? '') ? notePiece.accid : '') +
+//         '/' +
+//         notePiece.octave
+//     );
+//     const autoStem = stem === 'auto'; // StaveNoteStruct expects the underscore & lowercase.
+//
+//     // Build a GhostNote or StaveNote using the information we gathered.
+//     const note =
+//       type?.toLowerCase() === 'g'
+//         ? factory.GhostNote({ duration, dots })
+//         : factory.StaveNote({ keys, duration, dots, type, clef, autoStem });
+//     if (!autoStem) note.setStemDirection(stem === 'up' ? Stem.UP : Stem.DOWN);
+//
+//     // Attach accidentals.
+//     const accidentals: (Accidental | undefined)[] = [];
+//     chord.forEach((notePiece: NotePiece, index: number) => {
+//       const accid = notePiece.accid;
+//       if (typeof accid === 'string') {
+//         const accidental = factory.Accidental({ type: accid });
+//         note.addModifier(accidental, index);
+//         accidentals.push(accidental);
+//       } else {
+//         accidentals.push(undefined);
+//       }
+//     });
+//
+//     // Attach dots.
+//     for (let i = 0; i < dots; i++) Dot.buildAndAttach([note], { all: true });
+//
+//     this.commitHooks.forEach((commitHook) => commitHook(options, note, this));
+//
+//     this.elements.notes.push(note);
+//     this.elements.accidentals.push(accidentals);
+//     this.resetPiece();
+//   }
+// }
 
 export interface EasyScoreOptions {
   factory?: Factory;
@@ -492,15 +492,15 @@ export class EasyScore {
     return this;
   }
 
-  parse(line: string, options: BuilderOptions = {}): Result {
-    this.builder.reset(options);
-    const result = this.parser.parse(line);
-    if (!result.success && this.options.throwOnError) {
-      L(result);
-      throw new RuntimeError('Error parsing line: ' + line);
-    }
-    return result;
-  }
+//   parse(line: string, options: BuilderOptions = {}): Result {
+//     this.builder.reset(options);
+//     const result = this.parser.parse(line);
+//     if (!result.success && this.options.throwOnError) {
+//       L(result);
+//       throw new RuntimeError('Error parsing line: ' + line);
+//     }
+//     return result;
+//   }
 
   beam(
     notes: StemmableNote[],
@@ -521,16 +521,16 @@ export class EasyScore {
     return notes;
   }
 
-  notes(line: string, options: BuilderOptions = {}): StemmableNote[] {
-    options = { clef: this.defaults.clef, stem: this.defaults.stem, ...options };
-    this.parse(line, options);
-    return this.builder.getElements().notes;
-  }
+//   notes(line: string, options: BuilderOptions = {}): StemmableNote[] {
+//     options = { clef: this.defaults.clef, stem: this.defaults.stem, ...options };
+//     this.parse(line, options);
+//     return this.builder.getElements().notes;
+//   }
 
-  voice(notes: Note[], options: { time?: string; options?: { softmaxFactor: number } } = {}): Voice {
-    options = { time: this.defaults.time, ...options };
-    return this.factory.Voice(options).addTickables(notes);
-  }
+//   voice(notes: Note[], options: { time?: string; options?: { softmaxFactor: number } } = {}): Voice {
+//     options = { time: this.defaults.time, ...options };
+//     return this.factory.Voice(options).addTickables(notes);
+//   }
 
   addCommitHook(commitHook: CommitHook): void {
     this.builder.addCommitHook(commitHook);

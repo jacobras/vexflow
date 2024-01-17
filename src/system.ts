@@ -13,53 +13,53 @@ import { Category } from './typeguard';
 import { RuntimeError } from './util';
 import { Voice } from './voice';
 
-export interface SystemFormatterOptions extends FormatterOptions {
-  alpha?: number;
-}
+// export interface SystemFormatterOptions extends FormatterOptions {
+//   alpha?: number;
+// }
 
-export interface SystemStave {
-  voices: Voice[];
-  stave?: Stave;
-  noJustification?: boolean;
-  options?: StaveOptions;
-  spaceAbove?: number;
-  spaceBelow?: number;
-  debugNoteMetrics?: boolean;
-}
+// export interface SystemStave {
+//   voices: Voice[];
+//   stave?: Stave;
+//   noJustification?: boolean;
+//   options?: StaveOptions;
+//   spaceAbove?: number;
+//   spaceBelow?: number;
+//   debugNoteMetrics?: boolean;
+// }
 
-interface StaveInfo {
-  noJustification: boolean;
-  options: StaveOptions;
-  spaceAbove: number;
-  spaceBelow: number;
-  debugNoteMetrics: boolean;
-}
+// interface StaveInfo {
+//   noJustification: boolean;
+//   options: StaveOptions;
+//   spaceAbove: number;
+//   spaceBelow: number;
+//   debugNoteMetrics: boolean;
+// }
 
-/**
- * Formatting for systems created/drawn from factory:
- *
- * If width is provided, the system will use the specified width.
- *
- * If noJustification flag is 'true', there is no justification between voices
- * Otherwise, autoWidth defaults to true.
- *
- * If autowidth is true, the system uses format.preCalculateMinWidth
- * for the width of all voices, and default stave padding
- */
-export interface SystemOptions {
-  factory?: Factory;
-  noPadding?: boolean;
-  debugFormatter?: boolean;
-  spaceBetweenStaves?: number;
-  formatIterations?: number;
-  autoWidth?: boolean;
-  x?: number;
-  width?: number;
-  y?: number;
-  details?: SystemFormatterOptions;
-  formatOptions?: FormatParams;
-  noJustification?: boolean;
-}
+// /**
+//  * Formatting for systems created/drawn from factory:
+//  *
+//  * If width is provided, the system will use the specified width.
+//  *
+//  * If noJustification flag is 'true', there is no justification between voices
+//  * Otherwise, autoWidth defaults to true.
+//  *
+//  * If autowidth is true, the system uses format.preCalculateMinWidth
+//  * for the width of all voices, and default stave padding
+//  */
+// export interface SystemOptions {
+//   factory?: Factory;
+//   noPadding?: boolean;
+//   debugFormatter?: boolean;
+//   spaceBetweenStaves?: number;
+//   formatIterations?: number;
+//   autoWidth?: boolean;
+//   x?: number;
+//   width?: number;
+//   y?: number;
+//   details?: SystemFormatterOptions;
+//   formatOptions?: FormatParams;
+//   noJustification?: boolean;
+// }
 
 /**
  * System implements a musical system, which is a collection of staves,
@@ -67,18 +67,18 @@ export interface SystemOptions {
  * the system are formatted together.
  */
 export class System extends Element {
-  static get CATEGORY(): string {
-    return Category.System;
-  }
+//   static get CATEGORY(): string {
+//     return Category.System;
+//   }
 
-  protected options!: Required<SystemOptions>;
-  protected factory!: Factory;
+//   protected options!: Required<SystemOptions>;
+//   protected factory!: Factory;
   protected formatter?: Formatter;
   protected startX?: number;
   protected lastY?: number;
-  protected partStaves: Stave[];
-  protected partStaveInfos: StaveInfo[];
-  protected partVoices: Voice[];
+//   protected partStaves: Stave[];
+//   protected partStaveInfos: StaveInfo[];
+//   protected partVoices: Voice[];
   protected connector?: StaveConnector;
   protected debugNoteMetricsYs?: { y: number; stave: Stave }[];
 
@@ -180,50 +180,50 @@ export class System extends Element {
     return this.connector;
   }
 
-  /**
-   * Add a stave to the system.
-   *
-   * Example (one voice):
-   *
-   * `system.addStave({voices: [score.voice(score.notes('C#5/q, B4, A4, G#4'))]});`
-   *
-   * Example (two voices):
-   *
-   * `system.addStave({voices: [`
-   *   `score.voice(score.notes('C#5/q, B4, A4, G#4', {stem: 'up'})),`
-   *   `score.voice(score.notes('C#4/h, C#4', {stem: 'down'}))`
-   * `]});`
-   */
-  addStave(params: SystemStave): Stave {
-    const staveOptions: StaveOptions = { leftBar: false, ...params.options };
-
-    const stave =
-      params.stave ??
-      this.factory.Stave({ x: this.options.x, y: this.options.y, width: this.options.width, options: staveOptions });
-
-    const p = {
-      spaceAbove: 0, // stave spaces
-      spaceBelow: 0, // stave spaces
-      debugNoteMetrics: false,
-      noJustification: false,
-      ...params,
-      options: staveOptions, // this needs to go after ...params, so we can override the options field.
-    };
-
-    const ctx = this.getContext();
-    p.voices.forEach((voice) => {
-      voice
-        .setContext(ctx)
-        .setStave(stave)
-        .getTickables()
-        .forEach((tickable) => tickable.setStave(stave));
-      this.partVoices.push(voice);
-    });
-
-    this.partStaves.push(stave);
-    this.partStaveInfos.push(p);
-    return stave;
-  }
+//   /**
+//    * Add a stave to the system.
+//    *
+//    * Example (one voice):
+//    *
+//    * `system.addStave({voices: [score.voice(score.notes('C#5/q, B4, A4, G#4'))]});`
+//    *
+//    * Example (two voices):
+//    *
+//    * `system.addStave({voices: [`
+//    *   `score.voice(score.notes('C#5/q, B4, A4, G#4', {stem: 'up'})),`
+//    *   `score.voice(score.notes('C#4/h, C#4', {stem: 'down'}))`
+//    * `]});`
+//    */
+//   addStave(params: SystemStave): Stave {
+//     const staveOptions: StaveOptions = { leftBar: false, ...params.options };
+//
+//     const stave =
+//       params.stave ??
+//       this.factory.Stave({ x: this.options.x, y: this.options.y, width: this.options.width, options: staveOptions });
+//
+//     const p = {
+//       spaceAbove: 0, // stave spaces
+//       spaceBelow: 0, // stave spaces
+//       debugNoteMetrics: false,
+//       noJustification: false,
+//       ...params,
+//       options: staveOptions, // this needs to go after ...params, so we can override the options field.
+//     };
+//
+//     const ctx = this.getContext();
+//     p.voices.forEach((voice) => {
+//       voice
+//         .setContext(ctx)
+//         .setStave(stave)
+//         .getTickables()
+//         .forEach((tickable) => tickable.setStave(stave));
+//       this.partVoices.push(voice);
+//     });
+//
+//     this.partStaves.push(stave);
+//     this.partStaveInfos.push(p);
+//     return stave;
+//   }
 
   /**
    * Add voices to the system with stave already assigned.

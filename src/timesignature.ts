@@ -36,9 +36,9 @@ const assertIsValidTimeSig = (timeSpec: string) => {
  * such as "3/4(6/8)" or "2/4+5/8".
  */
 export class TimeSignature extends StaveModifier {
-  static get CATEGORY(): string {
-    return Category.TimeSignature;
-  }
+//   static get CATEGORY(): string {
+//     return Category.TimeSignature;
+//   }
 
   bottomLine: number; // bottomLine and topLine are used to calculate the position of the
   topLine: number; // top row of digits in a numeric TimeSignature.
