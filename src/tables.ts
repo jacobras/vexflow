@@ -292,7 +292,7 @@ export class Tables {
   static SOFTMAX_FACTOR = 10;
   static STEM_WIDTH = 1.5;
   static STEM_HEIGHT = 35;
-  static STAVE_LINE_THICKNESS = 1;
+//   static STAVE_LINE_THICKNESS = 1;
   static RENDER_PRECISION_PLACES = 3;
   static RESOLUTION = RESOLUTION;
 
@@ -357,7 +357,7 @@ export class Tables {
   static TABLATURE_FONT_SCALE = 39;
 
   static SLASH_NOTEHEAD_WIDTH = 15;
-  static STAVE_LINE_DISTANCE = 10;
+//   static STAVE_LINE_DISTANCE = 10;
 
   // HACK:
   // Since text origins are positioned at the baseline, we must

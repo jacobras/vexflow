@@ -18,108 +18,108 @@ import { TimeSignature } from './timesignature';
 import { Category, isBarline } from './typeguard';
 import { RuntimeError } from './util';
 
-export interface StaveLineConfig {
-  visible?: boolean;
-}
-
-export interface StaveOptions {
-  bottomTextPosition?: number;
-  lineConfig?: StaveLineConfig[];
-  spaceBelowStaffLn?: number;
-  spaceAboveStaffLn?: number;
-  verticalBarWidth?: number;
-  fillStyle?: string;
-  leftBar?: boolean;
-  rightBar?: boolean;
-  spacingBetweenLinesPx?: number;
-  topTextPosition?: number;
-  numLines?: number;
-}
+// export interface StaveLineConfig {
+//   visible?: boolean;
+// }
+//
+// export interface StaveOptions {
+//   bottomTextPosition?: number;
+//   lineConfig?: StaveLineConfig[];
+//   spaceBelowStaffLn?: number;
+//   spaceAboveStaffLn?: number;
+//   verticalBarWidth?: number;
+//   fillStyle?: string;
+//   leftBar?: boolean;
+//   rightBar?: boolean;
+//   spacingBetweenLinesPx?: number;
+//   topTextPosition?: number;
+//   numLines?: number;
+// }
 
 // Used by Stave.format() to sort the modifiers at the beginning and end of a stave.
 // The keys (computed property names) match the CATEGORY property in the
 // Barline, Clef, KeySignature, TimeSignature classes.
-const SORT_ORDER_BEG_MODIFIERS = {
-  [Barline.CATEGORY]: 0,
-  [Clef.CATEGORY]: 1,
-  [KeySignature.CATEGORY]: 2,
-  [TimeSignature.CATEGORY]: 3,
-};
-
-const SORT_ORDER_END_MODIFIERS = {
-  [TimeSignature.CATEGORY]: 0,
-  [KeySignature.CATEGORY]: 1,
-  [Barline.CATEGORY]: 2,
-  [Clef.CATEGORY]: 3,
-};
+// const SORT_ORDER_BEG_MODIFIERS = {
+//   [Barline.CATEGORY]: 0,
+//   [Clef.CATEGORY]: 1,
+//   [KeySignature.CATEGORY]: 2,
+//   [TimeSignature.CATEGORY]: 3,
+// };
+//
+// const SORT_ORDER_END_MODIFIERS = {
+//   [TimeSignature.CATEGORY]: 0,
+//   [KeySignature.CATEGORY]: 1,
+//   [Barline.CATEGORY]: 2,
+//   [Clef.CATEGORY]: 3,
+// };
 
 export class Stave extends Element {
-  static get CATEGORY(): string {
-    return Category.Stave;
-  }
+//   static get CATEGORY(): string {
+//     return Category.Stave;
+//   }
 
   readonly options: Required<StaveOptions>;
 
-  protected startX: number;
-  protected endX: number;
-  protected clef: string;
-  protected endClef?: string;
+//   protected startX: number;
+//   protected endX: number;
+//   protected clef: string;
+//   protected endClef?: string;
 
-  protected formatted: boolean;
-  protected measure: number;
-  protected bounds: Bounds;
-  protected readonly modifiers: StaveModifier[];
+//   protected formatted: boolean;
+//   protected measure: number;
+//   protected bounds: Bounds;
+//   protected readonly modifiers: StaveModifier[];
 
-  protected defaultLedgerLineStyle: ElementStyle;
+//   protected defaultLedgerLineStyle: ElementStyle;
 
   // This is the sum of the padding that normally goes on left + right of a stave during
   // drawing. Used to size staves correctly with content width.
-  static get defaultPadding(): number {
-    return Metrics.get('Stave.padding') + Metrics.get('Stave.endPaddingMax');
-  }
+//   static get defaultPadding(): number {
+//     return Metrics.get('Stave.padding') + Metrics.get('Stave.endPaddingMax');
+//   }
 
-  // Right padding, used by system if startX is already determined.
-  static get rightPadding(): number {
-    return Metrics.get('Stave.endPaddingMax');
-  }
+//   // Right padding, used by system if startX is already determined.
+//   static get rightPadding(): number {
+//     return Metrics.get('Stave.endPaddingMax');
+//   }
 
   constructor(x: number, y: number, width: number, options?: StaveOptions) {
     super();
 
-    this.x = x;
-    this.y = y;
-    this.width = width;
-    this.formatted = false;
-    this.startX = x + 5;
-    this.endX = x + width;
-    this.modifiers = []; // stave modifiers (clef, key, time, barlines, coda, segno, etc.)
-    this.measure = 0;
-    this.clef = 'treble';
-    this.endClef = undefined;
+//     this.x = x;
+//     this.y = y;
+//     this.width = width;
+//     this.formatted = false;
+//     this.startX = x + 5;
+//     this.endX = x + width;
+//     this.modifiers = []; // stave modifiers (clef, key, time, barlines, coda, segno, etc.)
+//     this.measure = 0;
+//     this.clef = 'treble';
+//     this.endClef = undefined;
 
-    this.options = {
-      verticalBarWidth: 10, // Width around vertical bar end-marker
-      numLines: 5,
-      fillStyle: '#999999',
-      leftBar: true, // draw vertical bar on left
-      rightBar: true, // draw vertical bar on right
-      spacingBetweenLinesPx: Tables.STAVE_LINE_DISTANCE, // in pixels
-      spaceAboveStaffLn: 4, // in staff lines
-      spaceBelowStaffLn: 4, // in staff lines
-      topTextPosition: 1, // in staff lines
-      bottomTextPosition: 4, // in staff lines
-      lineConfig: [],
-      ...options,
-    };
-    this.bounds = { x: this.x, y: this.y, w: this.width, h: 0 };
-    this.defaultLedgerLineStyle = { strokeStyle: '#444', lineWidth: 1.4 };
-
-    this.resetLines();
-
-    // beg bar
-    this.addModifier(new Barline(this.options.leftBar ? BarlineType.SINGLE : BarlineType.NONE));
-    // end bar
-    this.addEndModifier(new Barline(this.options.rightBar ? BarlineType.SINGLE : BarlineType.NONE));
+//     this.options = {
+//       verticalBarWidth: 10, // Width around vertical bar end-marker
+//       numLines: 5,
+//       fillStyle: '#999999',
+//       leftBar: true, // draw vertical bar on left
+//       rightBar: true, // draw vertical bar on right
+//       spacingBetweenLinesPx: Tables.STAVE_LINE_DISTANCE, // in pixels
+//       spaceAboveStaffLn: 4, // in staff lines
+//       spaceBelowStaffLn: 4, // in staff lines
+//       topTextPosition: 1, // in staff lines
+//       bottomTextPosition: 4, // in staff lines
+//       lineConfig: [],
+//       ...options,
+//     };
+//     this.bounds = { x: this.x, y: this.y, w: this.width, h: 0 };
+//     this.defaultLedgerLineStyle = { strokeStyle: '#444', lineWidth: 1.4 };
+//
+//     this.resetLines();
+//
+//     // beg bar
+//     this.addModifier(new Barline(this.options.leftBar ? BarlineType.SINGLE : BarlineType.NONE));
+//     // end bar
+//     this.addEndModifier(new Barline(this.options.rightBar ? BarlineType.SINGLE : BarlineType.NONE));
   }
 
   /** Set default style for ledger lines. */
@@ -136,14 +136,14 @@ export class Stave extends Element {
     return this.options.spacingBetweenLinesPx * spacing;
   }
 
-  resetLines(): void {
-    this.options.lineConfig = [];
-    for (let i = 0; i < this.options.numLines; i++) {
-      this.options.lineConfig.push({ visible: true });
-    }
-    this.height = (this.options.numLines + this.options.spaceAboveStaffLn) * this.options.spacingBetweenLinesPx;
-    this.options.bottomTextPosition = this.options.numLines;
-  }
+//   resetLines(): void {
+//     this.options.lineConfig = [];
+//     for (let i = 0; i < this.options.numLines; i++) {
+//       this.options.lineConfig.push({ visible: true });
+//     }
+//     this.height = (this.options.numLines + this.options.spaceAboveStaffLn) * this.options.spacingBetweenLinesPx;
+//     this.options.bottomTextPosition = this.options.numLines;
+//   }
 
   setNoteStartX(x: number): this {
     if (!this.formatted) this.format();
@@ -370,23 +370,23 @@ export class Stave extends Element {
     return this.getYForLine(3);
   }
 
-  // This method adds a stave modifier to the stave. Note that the first two
-  // modifiers (BarLines) are automatically added upon construction.
-  addModifier(modifier: StaveModifier, position?: number): this {
-    if (position !== undefined) {
-      modifier.setPosition(position);
-    }
-
-    modifier.setStave(this);
-    this.formatted = false;
-    this.modifiers.push(modifier);
-    return this;
-  }
-
-  addEndModifier(modifier: StaveModifier): this {
-    this.addModifier(modifier, StaveModifierPosition.END);
-    return this;
-  }
+//   // This method adds a stave modifier to the stave. Note that the first two
+//   // modifiers (BarLines) are automatically added upon construction.
+//   addModifier(modifier: StaveModifier, position?: number): this {
+//     if (position !== undefined) {
+//       modifier.setPosition(position);
+//     }
+//
+//     modifier.setStave(this);
+//     this.formatted = false;
+//     this.modifiers.push(modifier);
+//     return this;
+//   }
+//
+//   addEndModifier(modifier: StaveModifier): this {
+//     this.addModifier(modifier, StaveModifierPosition.END);
+//     return this;
+//   }
 
   // Bar Line functions
   setBegBarType(type: number | BarlineType): this {

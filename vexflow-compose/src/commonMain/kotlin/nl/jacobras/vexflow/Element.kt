@@ -8,7 +8,7 @@ class ElementAttributes(
 )
 
 /** Element style. */
-interface ElementStyle {
+data class ElementStyle(
     /**
      * CSS color used for the shadow.
      *
@@ -16,14 +16,14 @@ interface ElementStyle {
      *
      * See [CSS Legal Color Values](https://www.w3schools.com/cssref/css_colors_legal.asp)
      */
-    val shadowColor: String?
+    val shadowColor: String? = null,
 
     /**
      * Level of blur applied to shadows.
      *
      * Values that are not finite numbers greater than or equal to zero are ignored.
      */
-    val shadowBlur: Number?
+    val shadowBlur: Number? = null,
 
     /**
      * CSS color used with context fill command.
@@ -32,7 +32,7 @@ interface ElementStyle {
      *
      * See [CSS Legal Color Values](https://www.w3schools.com/cssref/css_colors_legal.asp)
      */
-    val fillStyle: String?
+    val fillStyle: String? = null,
 
     /**
      * CSS color used with context stroke command.
@@ -41,18 +41,18 @@ interface ElementStyle {
      *
      * See [CSS Legal Color Values](https://www.w3schools.com/cssref/css_colors_legal.asp)
      */
-    val strokeStyle: String?
+    val strokeStyle: String? = null,
 
     /**
      * Line width, 1.0 by default.
      */
-    val lineWidth: Number?
+    val lineWidth: Double = 1.0,
 
     /**
      * See: [SVG `stroke-dasharray` attribute](https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/stroke-dasharray)
      */
-    val lineDash: String?
-}
+    val lineDash: String? = null
+)
 
 /**
  * Element implements a generic base class for VexFlow, with implementations
@@ -95,7 +95,7 @@ abstract class Element(category: Category?) {
         width = 0
     )
 
-    private var height = 0
+    protected var height = 0
     var width = 0
     private var xShift = 0
     private var yShift = 0
@@ -118,7 +118,7 @@ abstract class Element(category: Category?) {
      */
     fun addChildElement(child: Element): Element {
         this.children += child
-        return this;
+        return this
     }
 
     fun getCategory(): Category {
@@ -148,20 +148,20 @@ abstract class Element(category: Category?) {
      * ```
      */
     fun setStyle(style: ElementStyle?): Element {
-        this.style = style;
+        this.style = style
         return this
     }
 
     /** Set the element & associated children style used for rendering. */
     fun setGroupStyle(style: ElementStyle): Element {
-        this.style = style;
+        this.style = style
         children.forEach { it.setGroupStyle(style) }
         return this
     }
 
     /** Get the element style used for rendering. */
     fun getStyle(): ElementStyle? {
-        return this.style;
+        return this.style
     }
 
     /** Apply the element style to `context`. */
@@ -169,10 +169,10 @@ abstract class Element(category: Category?) {
         context: RenderContext? = this.context,
         style: ElementStyle? = this.getStyle()
     ): Element {
-        if (style == null) return this;
-        if (context == null) return this;
+        if (style == null) return this
+        if (context == null) return this
 
-        context.save();
+        context.save()
         style.shadowColor?.let { context.setShadowColor(it); }
         style.shadowBlur?.let { context.setShadowBlur(it); }
         style.fillStyle?.let { context.setFillStyle(it); }
@@ -188,10 +188,10 @@ abstract class Element(category: Category?) {
         context: RenderContext? = this.context,
         style: ElementStyle? = getStyle()
     ): Element {
-        if (style == null) return this;
-        if (context == null) return this;
-        context.restore();
-        return this;
+        if (style == null) return this
+        if (context == null) return this
+        context.restore()
+        return this
     }
 
     /**
@@ -199,10 +199,10 @@ abstract class Element(category: Category?) {
      * with the element's style (see `getStyle()` and `setStyle()`)
      */
     fun drawWithStyle() {
-        this.checkContext();
-        this.applyStyle();
-        this.draw();
-        this.restoreStyle();
+        this.checkContext()
+        this.applyStyle()
+        this.draw()
+        this.restoreStyle()
     }
 
     abstract fun draw()
@@ -214,7 +214,7 @@ abstract class Element(category: Category?) {
 
     /** Add a class label (An element can have multiple class labels). */
     fun addClass(className: String): Element {
-        if (hasClass(className)) return this;
+        if (hasClass(className)) return this
         if (attrs.`class`.isEmpty()) {
             attrs.`class` = className
         } else {
@@ -250,8 +250,8 @@ abstract class Element(category: Category?) {
 
     /** Call back from registry after the element is registered. */
     fun onRegister(registry: Registry): Element {
-        this.registry = registry;
-        return this;
+        this.registry = registry
+        return this
     }
 
 //    /** Return an attribute, such as 'id', 'type' or 'class'. */
@@ -290,7 +290,7 @@ abstract class Element(category: Category?) {
 
     /** Set the rendered status. */
     fun setRendered(rendered: Boolean = true): Element {
-        this.rendered = rendered;
+        this.rendered = rendered
         return this
     }
 
