@@ -7,6 +7,7 @@ import androidx.compose.material.TopAppBar
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.application
+import nl.jacobras.vexflow.example.ExampleSheet
 
 fun main() = application {
     Window(onCloseRequest = { exitApplication() }) {
@@ -15,10 +16,7 @@ fun main() = application {
                 TopAppBar(title = { Text("Desktop sample") })
             }
         ) { paddingValues ->
-            Text(
-                modifier = Modifier.padding(paddingValues),
-                text = "Hello, World!"
-            )
+            ExampleSheet(Modifier.padding(paddingValues))
         }
     }
 }

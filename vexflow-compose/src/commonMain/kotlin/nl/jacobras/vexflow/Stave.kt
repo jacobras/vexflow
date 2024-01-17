@@ -95,8 +95,8 @@ class Stave(private val options: StaveOptions) : Element(category = Category.Sta
         repeat(options.numLines) {
             options.lineConfig.add(StaveLineConfig(visible = true))
         }
-        height = (this.options.numLines + options.spaceAboveStaffLn) * options.spacingBetweenLinesPx;
-        options.bottomTextPosition = this.options.numLines;
+        height = (this.options.numLines + options.spaceAboveStaffLn) * options.spacingBetweenLinesPx
+        options.bottomTextPosition = this.options.numLines
     }
 
     fun getNumLines(): Int {
