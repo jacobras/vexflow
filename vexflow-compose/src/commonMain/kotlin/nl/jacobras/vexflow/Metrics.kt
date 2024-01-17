@@ -12,8 +12,36 @@ object Metrics {
         }
     }
 
+    /**
+     * Use the provided key to look up a value in CommonMetrics.
+     *
+     * @param key is a string separated by periods (e.g., `Stroke.text.fontFamily`).
+     * @param defaultValue is returned if the lookup fails.
+     * @returns the retrieved value (or `defaultValue` if the lookup fails).
+     *
+     * For the key `Stroke.text.fontFamily`, check all of the following:
+     *   1) fontFamily
+     *   2) Stroke.fontFamily
+     *   3) Stroke.text.fontFamily
+     * Retrieve the value from the most specific key (i.e., prefer #3 over #2 over #1 in the above example).
+     */
     fun <T : Any> get(key: String, defaultValue: Any? = null): T {
-        return (MetricsDefaults[key] ?: defaultValue) as T
+        val lastPart = key.substringAfterLast(".")
+        var firstParts = key.substringBeforeLast(".").split(".")
+        var found: Any? = null
+        var checkMore = true
+
+        while (checkMore) {
+            if (firstParts.isEmpty()) {
+                checkMore = false
+            }
+
+            val currentKey = "${firstParts.joinToString(".")}.$lastPart".removePrefix(".")
+            found = MetricsDefaults[currentKey] ?: found
+            firstParts = firstParts.dropLast(1)
+        }
+
+        return (found as? T) ?: (defaultValue as? T) ?: error("Cannot provide metric for key $key")
     }
 }
 
